@@ -21,25 +21,11 @@ def _read_env_file(path):
                 key, _, value = line.partition("=")
                 key = key.strip()
                 value = value.strip().strip('"').strip("'")
-                if key and key not in os.environ:
-                    os.environ[key] = value
+                if key:
+                    os.environ[key] = value  # always overwrite so .env updates take effect
     except OSError:
         pass
 
-
-# Load API keys from .env (primary) then llm_api.env (fallback).
-# override=False / manual reader: existing os.environ values are never overwritten.
-try:
-    from dotenv import load_dotenv as _load_dotenv
-    for _env_name in (".env", "llm_api.env"):
-        _env_path = _PROJECT_ROOT / _env_name
-        if _env_path.exists():
-            _load_dotenv(dotenv_path=_env_path, override=False)
-except ImportError:
-    for _env_name in (".env", "llm_api.env"):
-        _env_path = _PROJECT_ROOT / _env_name
-        if _env_path.exists():
-            _read_env_file(_env_path)
 
 _DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions"
 _DEEPSEEK_MODEL = "deepseek-chat"
@@ -49,9 +35,22 @@ def get_deepseek_api_key():
     """
     Return DEEPSEEK_API_KEY from the environment.
 
-    Priority: os.environ → .env → llm_api.env (both loaded at module import).
+    Re-reads .env / llm_api.env on every call (override=True) so that
+    updating the file takes effect without restarting Streamlit.
     Raises ValueError if the key is absent in all sources.
     """
+    try:
+        from dotenv import load_dotenv as _load_dotenv
+        for _env_name in (".env", "llm_api.env"):
+            _env_path = _PROJECT_ROOT / _env_name
+            if _env_path.exists():
+                _load_dotenv(dotenv_path=_env_path, override=True)
+    except ImportError:
+        for _env_name in (".env", "llm_api.env"):
+            _env_path = _PROJECT_ROOT / _env_name
+            if _env_path.exists():
+                _read_env_file(_env_path)
+
     key = os.environ.get("DEEPSEEK_API_KEY")
     if not key:
         raise ValueError(

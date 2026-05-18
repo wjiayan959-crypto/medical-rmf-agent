@@ -16,6 +16,7 @@ from database import (
 )
 from utils import validate_device_input
 from llm_stages import generate_followup_questions, generate_rmf_from_answers
+from report_generator import generate_rmf_report
 
 
 st.set_page_config(
@@ -73,7 +74,7 @@ hr { border-color: #eaeef3 !important; margin: 20px 0 !important; }
 # ── Session state ──────────────────────────────────────────────────────────────
 _WIZARD_KEYS = [
     "step", "rmf_id", "device_name", "intended_use", "device_type",
-    "questions", "followup_qa", "generated_df",
+    "questions", "followup_qa", "followup_answers", "generated_df",
     "generated_raw_response", "generated_rag_context",
 ]
 
@@ -85,12 +86,16 @@ _DEFAULTS = {
     "device_type": "",
     "questions": [],
     "followup_qa": [],
+    "followup_answers": [],
     "generated_df": None,
     "generated_raw_response": None,
     "generated_rag_context": None,
     "hist_edit_source_id": None,
     "hist_edit_df": None,
     "hist_edit_counter": 0,
+    "rmf_completed": False,
+    "rmp_saved": False,
+    "_pending_nav": None,
 }
 
 for _key, _val in _DEFAULTS.items():
@@ -173,6 +178,34 @@ def _dash_stat_card(icon: str, label: str, value: str, accent: str = "#3b82f6", 
 
 init_db()
 
+# ── Prototype login ────────────────────────────────────────────────────────────
+# NOTE: This is a session-identifier only, not real authentication.
+# For production, replace with a proper auth library such as
+# streamlit-authenticator, Firebase Auth, Supabase Auth, or OAuth 2.0.
+if not st.session_state.get("user_id"):
+    st.markdown("## 🏥 Medical RMF Agent")
+    st.divider()
+    st.subheader("Sign In")
+    st.caption(
+        "Enter your username or email to access your personal RMF workspace. "
+        "Each account's data is stored separately."
+    )
+    _login_input = st.text_input(
+        "Username or Email",
+        placeholder="e.g. john@hospital.org",
+        key="_login_field",
+    )
+    if st.button("Continue →", type="primary"):
+        _uid = _login_input.strip().lower()
+        if _uid:
+            st.session_state["user_id"] = _uid
+            st.rerun()
+        else:
+            st.error("Please enter a username or email address.")
+    st.stop()
+
+user_id: str = st.session_state["user_id"]
+
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
 
@@ -192,7 +225,7 @@ with st.sidebar:
     )
 
     # RMP status pill — compact, colour-coded, dark-mode safe
-    if rmp_config_exists():
+    if rmp_config_exists(user_id):
         st.markdown(
             '<span style="'
             "background:rgba(39,174,96,0.13);color:#1a7a40;"
@@ -235,10 +268,19 @@ with st.sidebar:
         "🕘  History":            "History",
     }
 
+    _nav_keys = list(_NAV_LABELS.keys())
+    _pending = st.session_state.pop("_pending_nav", None)
+    if _pending in _NAV_LABELS:
+        # Set the widget key BEFORE the radio is instantiated — this is the
+        # only safe way to pre-select a value when the key already exists in
+        # session state.  Writing to it AFTER render raises a widget-key error.
+        st.session_state["sidebar_nav"] = _pending
+
     _selected = st.radio(
         "nav",
-        list(_NAV_LABELS.keys()),
+        _nav_keys,
         label_visibility="collapsed",
+        key="sidebar_nav",
     )
     page = _NAV_LABELS[_selected]
 
@@ -254,6 +296,17 @@ with st.sidebar:
         '</div>',
         unsafe_allow_html=True,
     )
+
+    st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
+    st.divider()
+    st.markdown(
+        f'<div style="font-size:0.68rem;color:#8a9ab0;padding:0 2px 6px;">'
+        f'Signed in as <b>{user_id}</b></div>',
+        unsafe_allow_html=True,
+    )
+    if st.button("Logout", use_container_width=True, key="sidebar_logout"):
+        st.session_state.clear()
+        st.rerun()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -285,8 +338,8 @@ if page == "Dashboard":
     """, unsafe_allow_html=True)
 
     # ── Data ──────────────────────────────────────────────────────────────────────
-    versions = get_all_rmf_versions()
-    rmp_active = rmp_config_exists()
+    versions = get_all_rmf_versions(user_id)
+    rmp_active = rmp_config_exists(user_id)
     all_records = []
     for _v in versions:
         all_records.extend(get_risk_records_by_rmf(_v[0]))
@@ -651,7 +704,7 @@ if page == "Dashboard":
                 unsafe_allow_html=True,
             )
             if _row[6].button("Delete", key=f"delete_dash_{_tr_id}"):
-                delete_rmf_version(_tr_id)
+                delete_rmf_version(_tr_id, user_id)
                 st.success(f"RMF #{_tr_id} deleted.")
                 st.rerun()
     else:
@@ -672,6 +725,28 @@ if page == "Dashboard":
 # ══════════════════════════════════════════════════════════════════════════════
 elif page == "RMP Configuration":
 
+    # ── Completion screen ──────────────────────────────────────────────────────
+    if st.session_state.get("rmp_saved", False):
+        st.balloons()
+        st.markdown("## ✅ RMP Configuration Saved Successfully")
+        st.success(
+            "Your Risk Management Plan configuration has been saved. "
+            "You can now create a new RMF using this configuration.",
+            icon="✅",
+        )
+        st.markdown("")
+        _rmp_col1, _rmp_col2, _ = st.columns([2, 2, 3])
+        with _rmp_col1:
+            if st.button("Create New RMF", type="primary", use_container_width=True):
+                st.session_state.rmp_saved = False
+                st.session_state["_pending_nav"] = "➕  Create New RMF"
+                st.rerun()
+        with _rmp_col2:
+            if st.button("← Back", use_container_width=True):
+                st.session_state.rmp_saved = False
+                st.rerun()
+        st.stop()
+
     st.markdown("## Risk Management Plan Configuration")
     st.caption(
         "Define the scope, acceptability criteria, and team for your risk management process. "
@@ -679,7 +754,7 @@ elif page == "RMP Configuration":
     )
     st.divider()
 
-    cfg = get_latest_rmp_config() or {}
+    cfg = get_latest_rmp_config(user_id) or {}
 
     # ── 1. Lifecycle Scope ─────────────────────────────────────────────────────
     with st.container():
@@ -853,8 +928,8 @@ elif page == "RMP Configuration":
                 "residual_risk_basis": residual_risk_basis,
                 "verification_methods": verification_methods,
                 "team_members": team_members,
-            })
-            st.success("RMP Configuration saved successfully.", icon="✅")
+            }, user_id)
+            st.session_state.rmp_saved = True
             st.rerun()
 
 
@@ -867,7 +942,7 @@ elif page == "Create New RMF":
     st.caption("Three-step AI-assisted risk record generation following ISO 14971.")
     st.divider()
 
-    if not rmp_config_exists():
+    if not rmp_config_exists(user_id):
         st.warning(
             "Please complete and save the Risk Management Plan before creating a new RMF.",
             icon="⚠️",
@@ -875,7 +950,7 @@ elif page == "Create New RMF":
         st.info("Navigate to **RMP Configuration** in the sidebar to get started.")
         st.stop()
 
-    _step_bar(st.session_state.step)
+    _step_bar(4 if st.session_state.get("rmf_completed", False) else st.session_state.step)
     st.markdown("")
 
     # ── Step 1: Device information ─────────────────────────────────────────────
@@ -920,6 +995,7 @@ elif page == "Create New RMF":
                         )
                         st.session_state.questions = questions
                         st.session_state.generated_rag_context = rag_context
+                        st.session_state.followup_answers = []
                         st.session_state.step = 2
                         st.rerun()
                     except Exception as e:
@@ -939,12 +1015,22 @@ elif page == "Create New RMF":
         )
         st.divider()
 
+        # Before rendering, restore any widget state that Streamlit may have
+        # dropped while the text areas were off-screen (step 3 / completion).
+        for _i, _saved in enumerate(st.session_state.followup_answers):
+            if f"answer_{_i}" not in st.session_state:
+                st.session_state[f"answer_{_i}"] = _saved
+
         answers = []
         for i, question in enumerate(st.session_state.questions):
             answer = st.text_area(
                 f"Q{i + 1}: {question}", key=f"answer_{i}", height=80
             )
             answers.append(answer)
+
+        # Persist answers into non-widget state on every render so they
+        # survive any future step transition without relying on widget cleanup.
+        st.session_state.followup_answers = answers
 
         st.divider()
         col_back, col_generate, _ = st.columns([1, 2, 4])
@@ -975,6 +1061,7 @@ elif page == "Create New RMF":
                             st.session_state.device_name,
                             st.session_state.intended_use,
                             st.session_state.device_type,
+                            user_id,
                         )
                         save_risk_records(rmf_id, df)
 
@@ -991,6 +1078,36 @@ elif page == "Create New RMF":
     # ── Step 3: Results ────────────────────────────────────────────────────────
     elif st.session_state.step == 3:
 
+        # ── Completion screen ──────────────────────────────────────────────────
+        if st.session_state.get("rmf_completed", False):
+            st.balloons()
+            st.markdown("## 🎉 RMF Completed Successfully")
+            st.success(
+                "Your AI-assisted Risk Management File has been generated and saved. "
+                f"RMF ID: **{st.session_state.rmf_id}**",
+                icon="✅",
+            )
+            st.markdown("")
+            _done_col1, _done_col2, _done_col3 = st.columns([2, 2, 2])
+            with _done_col1:
+                if st.button("+ Start New RMF", type="primary", use_container_width=True):
+                    st.session_state.rmf_completed = False
+                    for _k in _WIZARD_KEYS:
+                        st.session_state.pop(_k, None)
+                    st.rerun()
+            with _done_col2:
+                if st.button("View / Modify History", use_container_width=True):
+                    st.session_state.rmf_completed = False
+                    for _k in _WIZARD_KEYS:
+                        st.session_state.pop(_k, None)
+                    st.session_state["_pending_nav"] = "🕘  History"
+                    st.rerun()
+            with _done_col3:
+                if st.button("← Back to RMF Draft", use_container_width=True):
+                    st.session_state.rmf_completed = False
+                    st.rerun()
+            st.stop()
+
         st.markdown("#### Step 3 — Generated RMF Draft")
 
         st.success(
@@ -1006,13 +1123,39 @@ elif page == "Create New RMF":
             .to_csv(index=False)
             .encode("utf-8")
         )
-        dl_col, _ = st.columns([2, 5])
-        with dl_col:
+
+        _report_bytes = generate_rmf_report(
+            st.session_state.generated_df,
+            {
+                "device_name":  st.session_state.device_name,
+                "intended_use": st.session_state.intended_use,
+                "device_type":  st.session_state.device_type,
+            },
+            get_latest_rmp_config(user_id) or {},
+            st.session_state.followup_qa,
+        )
+        _safe_name = (
+            st.session_state.device_name
+            .replace(" ", "_")
+            .replace("/", "-")
+            .replace("\\", "-")
+        )
+
+        dl_col1, dl_col2, _ = st.columns([2, 2, 3])
+        with dl_col1:
             st.download_button(
                 label="Download CSV",
                 data=csv_data,
                 file_name="rmf_draft.csv",
                 mime="text/csv",
+                use_container_width=True,
+            )
+        with dl_col2:
+            st.download_button(
+                label="Download RMF Report (.docx)",
+                data=_report_bytes,
+                file_name=f"rmf_report_{_safe_name}.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 use_container_width=True,
             )
 
@@ -1030,10 +1173,15 @@ elif page == "Create New RMF":
         )
 
         st.markdown("")
-        if st.button("← Start New RMF"):
-            for key in _WIZARD_KEYS:
-                st.session_state.pop(key, None)
-            st.rerun()
+        _act_col1, _act_col2, _ = st.columns([2, 2, 3])
+        with _act_col1:
+            if st.button("✅ Complete RMF", type="primary", use_container_width=True):
+                st.session_state.rmf_completed = True
+                st.rerun()
+        with _act_col2:
+            if st.button("← Back to Follow-up Q&A", use_container_width=True):
+                st.session_state.step = 2
+                st.rerun()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1060,7 +1208,7 @@ elif page == "History":
     _EDIT_COLS = list(_DB_TO_DISPLAY.values())
     _RISK_LEVEL_OPTS = ["High", "Medium", "Low"]
 
-    versions = get_all_rmf_versions()
+    versions = get_all_rmf_versions(user_id)
 
     if not versions:
         st.info(
@@ -1122,7 +1270,7 @@ elif page == "History":
                 if btn_col2.button(
                     "Delete", key=f"delete_hist_{rmf_id}", use_container_width=True
                 ):
-                    delete_rmf_version(rmf_id)
+                    delete_rmf_version(rmf_id, user_id)
                     if st.session_state.hist_edit_source_id == rmf_id:
                         st.session_state.hist_edit_source_id = None
                         st.session_state.hist_edit_df = None
@@ -1183,7 +1331,7 @@ elif page == "History":
 
         if col_save.button("Save as New Version", type="primary", use_container_width=True):
             try:
-                new_rmf_id = clone_rmf_version(src_id)
+                new_rmf_id = clone_rmf_version(src_id, user_id)
                 update_risk_records(new_rmf_id, edited_df)
                 st.session_state.hist_edit_source_id = None
                 st.session_state.hist_edit_df = None

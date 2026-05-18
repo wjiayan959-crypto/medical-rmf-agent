@@ -77,26 +77,39 @@ def init_db():
     except Exception:
         pass  # column already exists
 
+    # user_id isolation — added for per-user data separation.
+    # Existing rows get NULL, which naturally excludes them from per-user queries.
+    try:
+        cursor.execute("ALTER TABLE rmf_versions ADD COLUMN user_id TEXT")
+    except Exception:
+        pass
+
+    try:
+        cursor.execute("ALTER TABLE rmp_config ADD COLUMN user_id TEXT")
+    except Exception:
+        pass
+
     conn.commit()
     conn.close()
 
 
-def create_rmf_version(device_name, intended_use, device_type):
+def create_rmf_version(device_name, intended_use, device_type, user_id):
 
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-    INSERT INTO rmf_versions 
-    (device_name, intended_use, device_type, version_name, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO rmf_versions
+    (device_name, intended_use, device_type, version_name, status, created_at, user_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (
         device_name,
         intended_use,
         device_type,
-        "Version 1",  
-        "Draft",      
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "Version 1",
+        "Draft",
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        user_id,
     ))
 
     rmf_id = cursor.lastrowid  
@@ -108,8 +121,7 @@ def create_rmf_version(device_name, intended_use, device_type):
     return rmf_id
 
 
-def get_all_rmf_versions():
-
+def get_all_rmf_versions(user_id):
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -117,8 +129,9 @@ def get_all_rmf_versions():
     cursor.execute("""
     SELECT id, device_name, intended_use, device_type, version_name, status, created_at
     FROM rmf_versions
+    WHERE user_id = ?
     ORDER BY created_at DESC
-    """)
+    """, (user_id,))
 
     rows = cursor.fetchall()  
 
@@ -126,33 +139,34 @@ def get_all_rmf_versions():
 
     return rows
 
-def delete_rmf_version(rmf_id):
+def delete_rmf_version(rmf_id, user_id):
 
     conn = get_connection()
     cursor = conn.cursor()
 
+    # Ownership check: only delete if the version belongs to this user.
+    cursor.execute(
+        "SELECT id FROM rmf_versions WHERE id = ? AND user_id = ?",
+        (rmf_id, user_id),
+    )
+    if cursor.fetchone() is None:
+        conn.close()
+        return
 
-    cursor.execute("""
-    DELETE FROM risk_records
-    WHERE rmf_id = ?
-    """, (rmf_id,))
-
-    cursor.execute("""
-    DELETE FROM rmf_versions
-    WHERE id = ?
-    """, (rmf_id,))
+    cursor.execute("DELETE FROM risk_records WHERE rmf_id = ?", (rmf_id,))
+    cursor.execute("DELETE FROM rmf_versions WHERE id = ? AND user_id = ?", (rmf_id, user_id))
 
     conn.commit()
     conn.close()
 
 
-def clone_rmf_version(old_rmf_id):
+def clone_rmf_version(old_rmf_id, user_id):
     """
     Create a new RMF version by cloning an existing one.
 
-    1. Reads the source rmf_version row.
+    1. Reads the source rmf_version row (must belong to user_id).
     2. Increments the version number (e.g. Version 1 → Version 2).
-    3. Inserts a new rmf_version row with the same device info.
+    3. Inserts a new rmf_version row with the same device info and user_id.
     4. Copies all risk_records from old_rmf_id to the new version.
     5. Returns the new rmf_id.
     """
@@ -162,13 +176,13 @@ def clone_rmf_version(old_rmf_id):
 
     cursor.execute(
         "SELECT device_name, intended_use, device_type, version_name "
-        "FROM rmf_versions WHERE id = ?",
-        (old_rmf_id,),
+        "FROM rmf_versions WHERE id = ? AND user_id = ?",
+        (old_rmf_id, user_id),
     )
     src = cursor.fetchone()
     if src is None:
         conn.close()
-        raise ValueError(f"RMF version {old_rmf_id} not found.")
+        raise ValueError(f"RMF version {old_rmf_id} not found or access denied.")
 
     try:
         num = int(src["version_name"].split()[-1]) + 1
@@ -180,8 +194,8 @@ def clone_rmf_version(old_rmf_id):
 
     cursor.execute("""
     INSERT INTO rmf_versions
-        (device_name, intended_use, device_type, version_name, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?)
+        (device_name, intended_use, device_type, version_name, status, created_at, user_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (
         src["device_name"],
         src["intended_use"],
@@ -189,6 +203,7 @@ def clone_rmf_version(old_rmf_id):
         new_version_name,
         "Draft",
         now,
+        user_id,
     ))
     new_rmf_id = cursor.lastrowid
 
@@ -360,9 +375,9 @@ def update_risk_records(rmf_id, records):
     conn.close()
 
 
-def save_rmp_config(config):
+def save_rmp_config(config, user_id):
     """
-    Overwrite the single RMP configuration record.
+    Overwrite the RMP configuration record for this user.
     Preserves the original created_at if a record already exists.
     List/dict fields are serialised as JSON text.
     """
@@ -370,18 +385,20 @@ def save_rmp_config(config):
     cursor = conn.cursor()
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    cursor.execute("SELECT created_at FROM rmp_config LIMIT 1")
+    cursor.execute(
+        "SELECT created_at FROM rmp_config WHERE user_id = ? LIMIT 1", (user_id,)
+    )
     existing = cursor.fetchone()
     created_at = existing[0] if existing else now
 
-    cursor.execute("DELETE FROM rmp_config")
+    cursor.execute("DELETE FROM rmp_config WHERE user_id = ?", (user_id,))
 
     cursor.execute("""
     INSERT INTO rmp_config
         (lifecycle_scope, risk_acceptability_criteria,
          residual_risk_method, residual_risk_basis,
-         verification_methods, team_members, created_at, updated_at, is_confirmed)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+         verification_methods, team_members, created_at, updated_at, is_confirmed, user_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
     """, (
         json.dumps(config.get("lifecycle_scope", [])),
         json.dumps(config.get("risk_acceptability_criteria", {})),
@@ -391,22 +408,23 @@ def save_rmp_config(config):
         config.get("team_members", ""),
         created_at,
         now,
+        user_id,
     ))
 
     conn.commit()
     conn.close()
 
 
-def get_latest_rmp_config():
+def get_latest_rmp_config(user_id):
     """
-    Return the RMP configuration as a dict, or None if not yet saved.
+    Return the RMP configuration for this user as a dict, or None if not saved.
     JSON-encoded list/dict fields are decoded back to Python objects.
     """
     conn = get_connection()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM rmp_config LIMIT 1")
+    cursor.execute("SELECT * FROM rmp_config WHERE user_id = ? LIMIT 1", (user_id,))
     row = cursor.fetchone()
     conn.close()
 
@@ -424,11 +442,14 @@ def get_latest_rmp_config():
     return d
 
 
-def rmp_config_exists():
-    """Return True if a confirmed (user-saved) RMP configuration exists."""
+def rmp_config_exists(user_id):
+    """Return True if a confirmed RMP configuration exists for this user."""
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM rmp_config WHERE is_confirmed = 1")
+    cursor.execute(
+        "SELECT COUNT(*) FROM rmp_config WHERE user_id = ? AND is_confirmed = 1",
+        (user_id,),
+    )
     count = cursor.fetchone()[0]
     conn.close()
     return count > 0
