@@ -1,0 +1,3 @@
+Hazard,Hazardous Situation,Possible Harm,Severity,Probability,Initial Risk Level,Risk Control Measure,Residual Risk,Verification Method,Status
+# FMEA/RMF标准字段（后面LLM输出要对齐这个结构）
+,,,,,,,,,

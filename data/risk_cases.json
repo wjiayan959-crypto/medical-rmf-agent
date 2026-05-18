@@ -1,0 +1,743 @@
+[
+  {
+    "device_type": "wearable biosensor",
+    "hazard": "incorrect sensor reading",
+    "hazardous_situation": "device reports normal result when patient condition is worsening",
+    "possible_harm": "delayed diagnosis or treatment",
+    "suggested_control": "sensor calibration, alarm validation, clinical verification"
+  },
+  {
+    "device_type": "wearable biosensor",
+    "hazard": "adhesive skin reaction",
+    "hazardous_situation": "prolonged sensor contact causes localized skin irritation or allergic response",
+    "harm": "contact dermatitis, chemical burn, or pressure injury",
+    "possible_causes": [
+      "biocompatible material failure",
+      "prolonged wear beyond recommended duration",
+      "individual skin sensitivity not assessed"
+    ],
+    "risk_controls": [
+      "use ISO 10993-compliant biocompatible adhesive",
+      "label maximum wear duration clearly",
+      "include contraindication for known adhesive allergies in IFU"
+    ],
+    "verification_methods": [
+      "biocompatibility testing per ISO 10993",
+      "clinical wear study",
+      "labeling adequacy review"
+    ]
+  },
+  {
+    "device_type": "wearable biosensor",
+    "hazard": "wireless data transmission failure",
+    "hazardous_situation": "sensor data fails to reach monitoring system during a critical clinical event",
+    "harm": "undetected patient deterioration, delayed clinical intervention",
+    "possible_causes": [
+      "Bluetooth or Wi-Fi interference in clinical environment",
+      "battery depletion without user awareness",
+      "gateway connectivity loss"
+    ],
+    "risk_controls": [
+      "local data buffering with automatic retry logic",
+      "low-battery audible and visual alarm",
+      "connection-loss alert to clinical staff"
+    ],
+    "verification_methods": [
+      "RF range and interference testing",
+      "battery life validation across environmental conditions",
+      "system integration and fail-over testing"
+    ]
+  },
+  {
+    "device_type": "infusion pump",
+    "hazard": "incorrect drug infusion rate",
+    "hazardous_situation": "pump delivers medication at incorrect flow rate due to programming error or mechanical fault",
+    "harm": "drug overdose or underdose leading to adverse drug reaction or treatment failure",
+    "possible_causes": [
+      "clinician programming error on touchscreen",
+      "occlusion upstream causing dose stacking on clearance",
+      "worn pump mechanism delivering inaccurate volume"
+    ],
+    "risk_controls": [
+      "dose error reduction software with configurable hard limits",
+      "occlusion detection alarm with automatic pause",
+      "independent double-check workflow for high-alert medications"
+    ],
+    "verification_methods": [
+      "flow accuracy testing per IEC 60601-2-24",
+      "alarm validation testing",
+      "summative usability study"
+    ]
+  },
+  {
+    "device_type": "infusion pump",
+    "hazard": "air in infusion line",
+    "hazardous_situation": "air bubble enters IV line without triggering the air-in-line detector",
+    "harm": "air embolism, cardiac arrest",
+    "possible_causes": [
+      "empty infusion bag not detected in time",
+      "tubing not properly primed before use",
+      "detector sensitivity degraded after repeated use"
+    ],
+    "risk_controls": [
+      "ultrasonic air-in-line detector with audible and visual alarm",
+      "empty-bag detection with automatic stop",
+      "priming procedure required before pump activation"
+    ],
+    "verification_methods": [
+      "air detection sensitivity testing per IEC 60601-2-24",
+      "empty-bag alarm validation",
+      "simulated clinical use testing"
+    ]
+  },
+  {
+    "device_type": "infusion pump",
+    "hazard": "free-flow of medication",
+    "hazardous_situation": "infusion set allows uncontrolled gravity flow when disconnected from pump",
+    "harm": "rapid drug overdose",
+    "possible_causes": [
+      "anti-free-flow clamp not engaged by user",
+      "single-use set reused after clamp spring fatigue",
+      "damaged clamp mechanism not detected before use"
+    ],
+    "risk_controls": [
+      "anti-free-flow design requiring active clamp engagement",
+      "incompatibility with gravity administration by design",
+      "mandatory pre-use clamp inspection step in IFU"
+    ],
+    "verification_methods": [
+      "free-flow performance testing",
+      "clamp mechanical durability testing",
+      "usability testing with simulation"
+    ]
+  },
+  {
+    "device_type": "glucose monitor",
+    "hazard": "inaccurate blood glucose reading",
+    "hazardous_situation": "device reports blood glucose within normal range when patient is hypoglycemic",
+    "harm": "failure to treat hypoglycemia resulting in loss of consciousness or seizure",
+    "possible_causes": [
+      "hematocrit interference outside validated range",
+      "expired test strip used",
+      "insufficient blood sample volume applied"
+    ],
+    "risk_controls": [
+      "hematocrit correction algorithm with flagging outside range",
+      "strip expiry date detection with blocking error code",
+      "insufficient sample volume detection before result display"
+    ],
+    "verification_methods": [
+      "analytical accuracy testing per ISO 15197",
+      "interference testing across hematocrit range",
+      "clinical performance study"
+    ]
+  },
+  {
+    "device_type": "glucose monitor",
+    "hazard": "sensor or meter calibration drift",
+    "hazardous_situation": "device reading drifts over time without user awareness",
+    "harm": "systematic dosing errors leading to chronic hyperglycemia or hypoglycemia",
+    "possible_causes": [
+      "electrochemical sensor aging beyond validated period",
+      "temperature or humidity outside specified storage conditions",
+      "user skips quality control checks"
+    ],
+    "risk_controls": [
+      "mandatory calibration or warm-up reminder at startup",
+      "built-in quality control check strips with expected value range",
+      "sensor or strip expiry alarm"
+    ],
+    "verification_methods": [
+      "long-term accuracy stability testing",
+      "environmental stress testing",
+      "field calibration audit"
+    ]
+  },
+  {
+    "device_type": "glucose monitor",
+    "hazard": "incorrect user sampling technique",
+    "hazardous_situation": "patient applies insufficient or contaminated blood sample to test strip",
+    "harm": "inaccurate reading leads to inappropriate insulin dose",
+    "possible_causes": [
+      "inadequate user training for self-monitoring",
+      "complex interface for elderly or visually impaired users",
+      "instructions for use not available in user's language"
+    ],
+    "risk_controls": [
+      "audible sample sufficiency confirmation before result display",
+      "simplified step-by-step graphical user interface",
+      "multilingual instructions for use"
+    ],
+    "verification_methods": [
+      "formative and summative usability evaluation",
+      "human factors study with intended user population",
+      "training program validation"
+    ]
+  },
+  {
+    "device_type": "blood pressure monitor",
+    "hazard": "incorrect cuff application",
+    "hazardous_situation": "cuff applied over clothing or at incorrect position on arm",
+    "harm": "inaccurate BP reading resulting in missed hypertension or false positive diagnosis",
+    "possible_causes": [
+      "positioning instructions unclear for home user",
+      "wide range of arm circumferences not addressed by single cuff",
+      "user self-measuring without any training"
+    ],
+    "risk_controls": [
+      "cuff position indicator with user feedback",
+      "cuff size selection guide in labeling",
+      "on-device animated positioning instruction"
+    ],
+    "verification_methods": [
+      "clinical accuracy study per ISO 81060-2",
+      "usability study with intended lay user population",
+      "labeling adequacy review"
+    ]
+  },
+  {
+    "device_type": "blood pressure monitor",
+    "hazard": "irregular heartbeat interference with oscillometric algorithm",
+    "hazardous_situation": "arrhythmia during measurement causes algorithm to output erroneous BP value",
+    "harm": "falsely elevated or depressed BP reading leading to inappropriate treatment decision",
+    "possible_causes": [
+      "oscillometric algorithm not validated in arrhythmia population",
+      "atrial fibrillation highly prevalent in hypertensive target population"
+    ],
+    "risk_controls": [
+      "irregular heartbeat indicator flag displayed with measurement",
+      "IFU recommendation to confirm reading with clinician when flag is shown",
+      "clinical algorithm validation including arrhythmia subjects"
+    ],
+    "verification_methods": [
+      "clinical validation study including AF population",
+      "algorithm performance testing",
+      "labeling review"
+    ]
+  },
+  {
+    "device_type": "blood pressure monitor",
+    "hazard": "battery depletion during measurement",
+    "hazardous_situation": "device powers off mid-measurement for patient with uncontrolled hypertension",
+    "harm": "missed reading delays detection and treatment of hypertensive crisis",
+    "possible_causes": [
+      "no low-battery warning before depletion",
+      "battery drains faster in cold home environment",
+      "user reliant on single device without backup"
+    ],
+    "risk_controls": [
+      "low-battery visual and audible warning at sufficient remaining capacity",
+      "battery performance tested across operating temperature range",
+      "IFU guidance on battery maintenance frequency"
+    ],
+    "verification_methods": [
+      "battery life testing under load",
+      "environmental performance testing",
+      "labeling adequacy review"
+    ]
+  },
+  {
+    "device_type": "ECG monitor",
+    "hazard": "poor electrode skin contact",
+    "hazardous_situation": "dry or displaced electrode produces high-impedance artifact masking ECG waveform",
+    "harm": "missed arrhythmia or ST-elevation leading to delayed cardiac intervention",
+    "possible_causes": [
+      "electrode drying during extended monitoring",
+      "patient movement dislodging electrode",
+      "inadequate skin preparation before electrode placement"
+    ],
+    "risk_controls": [
+      "lead-off detection alarm with audible and visual alert",
+      "impedance monitoring with alert threshold",
+      "skin preparation instructions in IFU"
+    ],
+    "verification_methods": [
+      "lead impedance alarm testing",
+      "signal quality validation across impedance range",
+      "usability study with clinical staff"
+    ]
+  },
+  {
+    "device_type": "ECG monitor",
+    "hazard": "rhythm classification algorithm false negative",
+    "hazardous_situation": "automated arrhythmia detection outputs false negative for ventricular fibrillation",
+    "harm": "alarm not triggered, fatal arrhythmia untreated",
+    "possible_causes": [
+      "algorithm training data not representative of all waveform morphologies",
+      "noise rejection threshold set too aggressively",
+      "algorithm not validated for pediatric patient population"
+    ],
+    "risk_controls": [
+      "algorithm validated on diverse annotated ECG database",
+      "secondary confirmation mechanism before suppressing critical alarm",
+      "clinician manual override capability"
+    ],
+    "verification_methods": [
+      "algorithm performance testing per IEC 60601-2-47",
+      "clinical validation study",
+      "independent annotation review"
+    ]
+  },
+  {
+    "device_type": "ECG monitor",
+    "hazard": "patient lead disconnection",
+    "hazardous_situation": "ECG lead detaches during unattended monitoring without triggering alarm",
+    "harm": "cardiac event undetected, delayed resuscitation",
+    "possible_causes": [
+      "cable fatigue at strain relief point",
+      "inadequate lead retention mechanism for active patients",
+      "alarm silenced by staff and not re-enabled"
+    ],
+    "risk_controls": [
+      "lead-off alarm with automatic escalation after silence timeout",
+      "reinforced lead connectors with positive-latch design",
+      "alarm management policy documentation"
+    ],
+    "verification_methods": [
+      "lead disconnection alarm testing",
+      "cable pull-force and fatigue testing",
+      "clinical alarm audit"
+    ]
+  },
+  {
+    "device_type": "surgical instrument",
+    "hazard": "instrument mechanical failure during procedure",
+    "hazardous_situation": "cutting or grasping mechanism fails mid-operation",
+    "harm": "unintended tissue damage, hemorrhage, prolonged surgical procedure",
+    "possible_causes": [
+      "material fatigue from exceeding validated reprocessing cycle count",
+      "assembly defect introduced during manufacturing",
+      "use of instrument beyond its validated application"
+    ],
+    "risk_controls": [
+      "cycle count marking on instrument body",
+      "materials and mechanical testing across lifecycle",
+      "pre-use inspection checklist in IFU"
+    ],
+    "verification_methods": [
+      "mechanical fatigue and durability testing",
+      "reprocessing validation per ISO 17664",
+      "design FMEA review"
+    ]
+  },
+  {
+    "device_type": "surgical instrument",
+    "hazard": "inadequate sterilization",
+    "hazardous_situation": "instrument reaches patient with residual biological contamination after reprocessing",
+    "harm": "surgical site infection, sepsis",
+    "possible_causes": [
+      "complex internal geometry trapping debris after use",
+      "reprocessing instructions not validated for all cleaning equipment types",
+      "user deviates from validated cleaning protocol"
+    ],
+    "risk_controls": [
+      "validated cleaning and sterilization instructions per ISO 17664",
+      "design-for-cleanability review with simulated soil testing",
+      "reprocessing training program for sterile processing staff"
+    ],
+    "verification_methods": [
+      "soil removal testing",
+      "sterility assurance level testing",
+      "simulated-use reprocessing study"
+    ]
+  },
+  {
+    "device_type": "surgical instrument",
+    "hazard": "instrument fragmentation",
+    "hazardous_situation": "a component breaks off and is retained in the surgical site",
+    "harm": "retained foreign body requiring secondary intervention, infection",
+    "possible_causes": [
+      "stress concentration at thin cross-section under load",
+      "brittle fracture from sub-critical material defect",
+      "inadequate pre-use visual inspection"
+    ],
+    "risk_controls": [
+      "design robustness analysis (DFMEA) at fracture-risk features",
+      "surgical count and inspection protocol for all components",
+      "radiopaque markers for X-ray detectability of fragments"
+    ],
+    "verification_methods": [
+      "mechanical stress and fracture testing",
+      "radiopacity verification testing",
+      "simulated-use fragmentation study"
+    ]
+  },
+  {
+    "device_type": "implantable device",
+    "hazard": "battery end-of-life without patient awareness",
+    "hazardous_situation": "implanted device reaches end-of-life and stops therapy delivery",
+    "harm": "sudden loss of pacing or neurostimulation therapy, life-threatening event",
+    "possible_causes": [
+      "battery longevity shorter than predicted due to high therapy demand",
+      "patient missed scheduled follow-up appointment",
+      "remote monitoring not configured at implant"
+    ],
+    "risk_controls": [
+      "elective replacement indicator with early warning threshold communicated to clinician",
+      "remote monitoring telemetry with automated alert",
+      "patient education on follow-up intervals"
+    ],
+    "verification_methods": [
+      "battery longevity testing under maximum demand conditions",
+      "elective replacement indicator threshold validation",
+      "remote monitoring system testing"
+    ]
+  },
+  {
+    "device_type": "implantable device",
+    "hazard": "implanted lead fracture",
+    "hazardous_situation": "lead breaks and interrupts electrical continuity between device and target tissue",
+    "harm": "loss of pacing or sensing, arrhythmia, inappropriate shock delivery",
+    "possible_causes": [
+      "repetitive mechanical stress at subclavian crush point",
+      "manufacturing defect in conductor coil",
+      "patient anatomy creating abnormal lead stress"
+    ],
+    "risk_controls": [
+      "lead integrity monitoring algorithm with patient alert",
+      "material and mechanical durability testing across fatigue cycles",
+      "implant technique guidelines minimizing stress concentration"
+    ],
+    "verification_methods": [
+      "mechanical fatigue testing per applicable standard",
+      "lead integrity alarm validation",
+      "post-market surveillance program"
+    ]
+  },
+  {
+    "device_type": "implantable device",
+    "hazard": "MRI-induced device malfunction",
+    "hazardous_situation": "patient undergoes MRI without following MRI conditional labeling requirements",
+    "harm": "device malfunction, cardiac tissue heating, device movement or dislodgement",
+    "possible_causes": [
+      "patient not aware of implant MRI restrictions",
+      "radiology staff not informed of implant before scan",
+      "MRI parameters used outside MRI-conditional labeling"
+    ],
+    "risk_controls": [
+      "patient implant card listing MRI conditions",
+      "MRI-conditional programming mode activated before scan",
+      "pre-scan MRI screening protocol for clinical staff"
+    ],
+    "verification_methods": [
+      "MRI conditional testing per ASTM F2182 and ISO/TS 10974",
+      "labeling adequacy review",
+      "clinical protocol validation study"
+    ]
+  },
+  {
+    "device_type": "diagnostic software",
+    "hazard": "algorithm performance bias",
+    "hazardous_situation": "AI diagnostic model performs significantly worse on patient subgroups underrepresented in training data",
+    "harm": "missed diagnosis or false positive in specific demographic groups",
+    "possible_causes": [
+      "non-diverse training dataset lacking minority demographics",
+      "no subgroup performance analysis during development",
+      "image quality or skin tone variation not accounted for in model"
+    ],
+    "risk_controls": [
+      "subgroup performance analysis required during development and validation",
+      "diverse and representative training and validation dataset",
+      "mandatory clinician review of all AI diagnostic outputs"
+    ],
+    "verification_methods": [
+      "performance testing across demographic subgroups",
+      "independent clinical validation study",
+      "bias and fairness audit"
+    ]
+  },
+  {
+    "device_type": "diagnostic software",
+    "hazard": "software update regression",
+    "hazardous_situation": "software update introduces error in analysis algorithm undetected before deployment",
+    "harm": "systematically incorrect diagnostic outputs affecting large number of patients",
+    "possible_causes": [
+      "inadequate automated regression testing coverage",
+      "no version control on model artifacts",
+      "update deployed without clinical re-validation"
+    ],
+    "risk_controls": [
+      "automated regression test suite against reference dataset before each release",
+      "change control procedure with risk assessment",
+      "staged rollout with post-deployment performance monitoring"
+    ],
+    "verification_methods": [
+      "regression testing on validated reference dataset",
+      "change management audit",
+      "post-deployment performance monitoring dashboard"
+    ]
+  },
+  {
+    "device_type": "diagnostic software",
+    "hazard": "data integration mapping error",
+    "hazardous_situation": "software receives incorrect patient data from EHR due to interface mapping error",
+    "harm": "diagnosis based on wrong patient data, potential patient misidentification",
+    "possible_causes": [
+      "HL7 or FHIR field mapping error between systems",
+      "field name mismatch between EHR and software",
+      "unit conversion error in data normalization"
+    ],
+    "risk_controls": [
+      "input data validation and clinical range sanity checks",
+      "patient identifier cross-verification before analysis",
+      "data provenance logging for audit trail"
+    ],
+    "verification_methods": [
+      "interface integration testing with real EHR sandbox",
+      "data accuracy and mapping audit",
+      "penetration testing of data interface"
+    ]
+  },
+  {
+    "device_type": "mobile health app",
+    "hazard": "incorrect medication reminder timing",
+    "hazardous_situation": "app sends medication reminder at wrong time due to timezone or daylight saving time error",
+    "harm": "missed dose or double dose leading to therapeutic failure or drug toxicity",
+    "possible_causes": [
+      "timezone handling bug in scheduling logic",
+      "daylight saving time transition not handled",
+      "server and device timezone mismatch"
+    ],
+    "risk_controls": [
+      "timezone-aware scheduling with UTC normalization",
+      "dose logging with timestamp to detect missed or duplicate doses",
+      "user-accessible reminder review and edit interface"
+    ],
+    "verification_methods": [
+      "timezone and DST boundary testing across regions",
+      "clinical scenario validation",
+      "summative usability study"
+    ]
+  },
+  {
+    "device_type": "mobile health app",
+    "hazard": "app crash during symptom data entry",
+    "hazardous_situation": "critical symptom data is lost before transmission to clinical team",
+    "harm": "delayed clinical response to patient deterioration",
+    "possible_causes": [
+      "memory leak on target mobile OS version",
+      "database write error during sync",
+      "network timeout causing uncaught exception"
+    ],
+    "risk_controls": [
+      "local auto-save before any network transmission",
+      "crash reporting and session recovery mechanism",
+      "data sync retry logic with user notification"
+    ],
+    "verification_methods": [
+      "stress and crash testing on target devices",
+      "data integrity testing under network interruption",
+      "regression testing after OS updates"
+    ]
+  },
+  {
+    "device_type": "mobile health app",
+    "hazard": "unauthorized access to patient health data",
+    "hazardous_situation": "weak authentication allows unauthorized user to access patient health records stored in app",
+    "harm": "patient privacy breach, potential misuse of sensitive health data",
+    "possible_causes": [
+      "no biometric or two-factor authentication enforced",
+      "session token not invalidated on logout",
+      "insecure local data storage without encryption"
+    ],
+    "risk_controls": [
+      "mandatory strong authentication with biometric or 2FA option",
+      "encrypted local storage for all health data",
+      "session timeout and token invalidation on logout"
+    ],
+    "verification_methods": [
+      "penetration testing",
+      "OWASP Mobile Top 10 assessment",
+      "HIPAA and GDPR compliance review"
+    ]
+  },
+  {
+    "device_type": "catheter",
+    "hazard": "catheter occlusion",
+    "hazardous_situation": "kinking or thrombus formation blocks fluid flow through catheter lumen",
+    "harm": "failure of drug delivery or drainage, treatment delay",
+    "possible_causes": [
+      "catheter material kinking at anatomical bend points",
+      "blood backflow due to inadequate flushing protocol",
+      "tip malposition increasing occlusion risk"
+    ],
+    "risk_controls": [
+      "kink-resistant catheter material selection",
+      "anti-thrombogenic surface coating",
+      "flushing protocol and frequency specified in IFU"
+    ],
+    "verification_methods": [
+      "kink resistance testing",
+      "flow rate integrity testing",
+      "biocompatibility testing per ISO 10993"
+    ]
+  },
+  {
+    "device_type": "catheter",
+    "hazard": "catheter tip migration",
+    "hazardous_situation": "catheter tip moves from intended anatomical position after initial placement",
+    "harm": "fluid delivered to unintended anatomical site, vessel damage, pneumothorax",
+    "possible_causes": [
+      "inadequate external fixation after placement",
+      "patient movement dislodging catheter",
+      "tip design not optimized for retention in target vessel"
+    ],
+    "risk_controls": [
+      "securement device requirement stated in IFU",
+      "radiopaque tip marker for position verification by imaging",
+      "tip position confirmation protocol before use"
+    ],
+    "verification_methods": [
+      "tip migration testing in simulated anatomy model",
+      "radiopacity testing",
+      "clinical placement validation study"
+    ]
+  },
+  {
+    "device_type": "catheter",
+    "hazard": "catheter-related insertion site infection",
+    "hazardous_situation": "skin microorganisms migrate along catheter tract after insertion",
+    "harm": "catheter-related bloodstream infection, sepsis",
+    "possible_causes": [
+      "break in aseptic technique during insertion",
+      "prolonged indwelling duration beyond recommended maximum",
+      "hub contamination during access"
+    ],
+    "risk_controls": [
+      "antimicrobial catheter surface coating",
+      "sterile insertion kit with procedural checklist",
+      "maximum recommended dwell time stated in IFU"
+    ],
+    "verification_methods": [
+      "antimicrobial efficacy testing",
+      "sterility testing",
+      "clinical infection rate monitoring in post-market surveillance"
+    ]
+  },
+  {
+    "device_type": "ventilator",
+    "hazard": "breathing circuit disconnection",
+    "hazardous_situation": "breathing circuit detaches from patient airway without triggering an alarm",
+    "harm": "complete loss of ventilation, hypoxia, cardiac arrest",
+    "possible_causes": [
+      "low-pressure alarm threshold set too low or disabled by staff",
+      "connector design allows unintentional pull-out under low force",
+      "alarm silenced and timeout not enforced"
+    ],
+    "risk_controls": [
+      "low-pressure disconnect alarm with non-defeatable minimum threshold",
+      "positive-locking circuit connectors",
+      "alarm re-enable after fixed silence timeout"
+    ],
+    "verification_methods": [
+      "disconnect alarm testing per ISO 80601-2-12",
+      "connector pull-force testing",
+      "alarm integration and escalation testing"
+    ]
+  },
+  {
+    "device_type": "ventilator",
+    "hazard": "incorrect tidal volume delivery",
+    "hazardous_situation": "ventilator delivers tidal volume significantly outside prescribed range due to sensor drift or compliance mismatch",
+    "harm": "barotrauma from over-inflation or hypoventilation from under-delivery",
+    "possible_causes": [
+      "patient circuit compliance not compensated in volume calculation",
+      "flow sensor drift over time",
+      "clinician sets incorrect weight-based tidal volume"
+    ],
+    "risk_controls": [
+      "circuit compliance compensation algorithm with auto-measurement",
+      "flow sensor auto-calibration at startup",
+      "weight-based tidal volume calculator with out-of-range alert"
+    ],
+    "verification_methods": [
+      "delivered volume accuracy testing across lung compliance range",
+      "compliance compensation validation",
+      "clinical performance study"
+    ]
+  },
+  {
+    "device_type": "ventilator",
+    "hazard": "oxygen concentration delivery error",
+    "hazardous_situation": "FiO2 delivered to patient deviates significantly from set value",
+    "harm": "hyperoxia causing lung injury or retinopathy, or hypoxia",
+    "possible_causes": [
+      "oxygen sensor failure with no redundant sensing",
+      "blender mechanism fault under supply pressure variation",
+      "gas supply pressure drop below minimum operating pressure"
+    ],
+    "risk_controls": [
+      "redundant oxygen sensing with alarm on deviation from set value",
+      "blender performance tested across validated supply pressure range",
+      "low supply pressure alarm"
+    ],
+    "verification_methods": [
+      "oxygen delivery accuracy testing",
+      "sensor failure mode testing",
+      "gas supply pressure variation testing"
+    ]
+  },
+  {
+    "device_type": "home-use monitoring device",
+    "hazard": "patient misinterpretation of clinical output",
+    "hazardous_situation": "patient misunderstands device output and takes inappropriate self-treatment action",
+    "harm": "delayed emergency care or inappropriate medication adjustment",
+    "possible_causes": [
+      "clinical terminology displayed not accessible to lay user",
+      "no guidance on when to seek emergency care",
+      "ambiguous trend display without context"
+    ],
+    "risk_controls": [
+      "plain-language display with actionable guidance for each result state",
+      "threshold-based alert with explicit seek emergency care instruction",
+      "user interface designed and tested with intended lay population"
+    ],
+    "verification_methods": [
+      "summative usability study with intended lay users",
+      "comprehension testing of output labels",
+      "labeling adequacy review"
+    ]
+  },
+  {
+    "device_type": "home-use monitoring device",
+    "hazard": "silent device malfunction",
+    "hazardous_situation": "device malfunctions and continues displaying readings without alerting user to fault state",
+    "harm": "patient relies on incorrect readings, undetected clinical deterioration",
+    "possible_causes": [
+      "no built-in self-diagnostic test",
+      "fault masked by stale displayed value from last successful measurement",
+      "no connectivity-based remote device health monitoring"
+    ],
+    "risk_controls": [
+      "periodic self-diagnostic with fault indicator on display",
+      "stale data timeout with warning displayed",
+      "remote alert to care team on detected device fault"
+    ],
+    "verification_methods": [
+      "fault detection coverage testing",
+      "self-test validation",
+      "remote monitoring integration testing"
+    ]
+  },
+  {
+    "device_type": "home-use monitoring device",
+    "hazard": "remote data transmission failure",
+    "hazardous_situation": "device fails to transmit patient data to clinical team due to home connectivity loss",
+    "harm": "clinician makes decisions based on outdated or missing patient data",
+    "possible_causes": [
+      "Wi-Fi dropout in home environment",
+      "app installed on unsupported operating system version",
+      "cellular data plan expired on device"
+    ],
+    "risk_controls": [
+      "local data buffering with automatic retry on reconnection",
+      "transmission failure alert to both patient and care team",
+      "minimum connectivity requirement specified in IFU"
+    ],
+    "verification_methods": [
+      "connectivity failure and recovery testing",
+      "data buffering and retry validation",
+      "system integration testing"
+    ]
+  }
+]

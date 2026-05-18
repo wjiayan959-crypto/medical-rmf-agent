@@ -1,0 +1,118 @@
+ISO 14971 focuses on medical device risk management.
+# ISO14971 是医疗器械风险管理核心标准
+
+Key process:
+1. Identify hazards.
+# 识别危险源
+2. Estimate and evaluate associated risks.
+# 评估风险（严重性+概率）
+3. Implement risk control measures.
+# 实施风险控制措施
+4. Evaluate residual risks.
+# 评估剩余风险
+5. Maintain risk management throughout lifecycle.
+# 全生命周期持续管理
+
+A risk management file should include:
+# RMF（风险管理文件）需要包含：
+- Device information（设备信息）
+- Hazard identification（危险源）
+- Hazardous situation（危险情境）
+- Possible harm（可能伤害）
+- Severity（严重性）
+- Probability（发生概率）
+- Initial risk level（初始风险）
+- Risk control measure（控制措施）
+- Residual risk（剩余风险）
+- Verification method（验证方法）
+- Review status（状态）
+
+--- Device-Type-Specific Risk Context ---
+
+WEARABLE BIOSENSOR:
+Key hazards: sensor inaccuracy, skin biocompatibility, wireless connectivity failure, battery depletion,
+data security breach, environmental interference (motion artifact, sweat).
+Common standards: ISO 10993 (biocompatibility), IEC 60601-1 (electrical safety),
+IEC 62133 (battery safety), relevant GDPR/HIPAA for data.
+Severity focus: missed clinical alerts are typically High severity; skin reactions typically Low-Medium.
+
+INFUSION PUMP:
+Key hazards: incorrect flow rate, free-flow, air embolism, occlusion, alarm failure, software error.
+Common standards: IEC 60601-2-24 (infusion pump performance), IEC 62366 (usability).
+Severity focus: overdose/underdose of high-alert medications is typically Critical or High severity.
+Dose error reduction software (DERS) with drug library and hard limits is a primary control.
+
+GLUCOSE MONITOR:
+Key hazards: inaccurate reading (false normal, false high, false low), user technique error,
+calibration drift, strip interference (hematocrit, drugs, altitude).
+Common standards: ISO 15197 (in vitro diagnostic accuracy).
+Severity focus: false low reading (missed hypoglycemia) is typically High-Critical severity.
+Self-monitoring devices must account for lay user operation and minimal training.
+
+BLOOD PRESSURE MONITOR:
+Key hazards: cuff sizing error, motion artifact, irregular heartbeat interference,
+position effect, device calibration drift.
+Common standards: ISO 81060-2 (clinical validation), AAMI/ESH/ISO Universal Protocol.
+Severity focus: systematic error leading to untreated hypertension is Medium-High severity.
+Home-use devices require lay user validation; arrhythmia detection is a known limitation.
+
+ECG MONITOR:
+Key hazards: electrode contact failure, lead disconnection, rhythm misclassification,
+false alarm fatigue, artifact from patient movement or EMI.
+Common standards: IEC 60601-2-47 (ambulatory ECG), IEC 60601-2-27 (bedside ECG).
+Severity focus: missed ventricular fibrillation is Critical. False positive alarms are Medium
+severity but contribute to alarm fatigue which is itself a system-level risk.
+
+SURGICAL INSTRUMENT:
+Key hazards: mechanical failure (breakage, fragmentation), retained foreign body,
+inadequate sterilization, unintended thermal or mechanical tissue injury.
+Common standards: ISO 17664 (reprocessing), ISO 13485 (QMS), ASTM mechanical testing.
+Severity focus: retained foreign body and hemorrhage are High-Critical; infection is High.
+Reprocessing validation is mandatory for reusable instruments.
+
+IMPLANTABLE DEVICE:
+Key hazards: battery depletion, lead fracture, MRI incompatibility, infection, device migration,
+electromagnetic interference, inappropriate therapy delivery.
+Common standards: ISO 14708 (implants), ASTM F2182 / ISO/TS 10974 (MRI safety),
+IEC 60601-2-2 (active implants).
+Severity focus: loss of life-sustaining therapy (pacing, defibrillation) is Critical severity.
+Post-market surveillance and remote monitoring are essential risk controls.
+
+DIAGNOSTIC SOFTWARE (AI/ML):
+Key hazards: algorithm bias across demographic subgroups, software regression after update,
+data integration error, cybersecurity vulnerability, over-reliance replacing clinical judgment.
+Common standards: IEC 62304 (software lifecycle), FDA AI/ML SaMD guidance,
+EU MDR Annex I for software as a medical device.
+Severity focus: false negative diagnosis for life-threatening conditions is Critical.
+Algorithm transparency, subgroup validation, and change management are primary controls.
+
+MOBILE HEALTH APP:
+Key hazards: incorrect reminders, data loss on crash, unauthorized data access, OS incompatibility,
+connectivity-dependent functionality failure, misleading health guidance.
+Common standards: IEC 62304, OWASP Mobile Top 10, HIPAA/GDPR.
+Severity focus: missed medication dose for critical therapy is High; privacy breach is Medium-High.
+Usability with lay users and data security are primary design priorities.
+
+CATHETER:
+Key hazards: occlusion, tip migration, kinking, infection (CRBSI), vessel perforation,
+material incompatibility, thrombosis.
+Common standards: ISO 10555 (intravascular catheters), ISO 10993 (biocompatibility),
+ISO 11135 / ISO 11607 (sterilization and packaging).
+Severity focus: CRBSI (sepsis) and vessel perforation are High-Critical.
+Antimicrobial coatings and strict aseptic technique are key controls.
+
+VENTILATOR:
+Key hazards: circuit disconnection, incorrect tidal volume, FiO2 error, alarm failure,
+power failure, software fault, patient-ventilator asynchrony.
+Common standards: ISO 80601-2-12 (critical care ventilators), IEC 60601-1 (electrical safety),
+IEC 60601-1-8 (alarms).
+Severity focus: loss of ventilation in apneic patient is Critical. Barotrauma and hyperoxia are High.
+Alarm system integrity per IEC 60601-1-8 is mandatory; non-defeatable minimum thresholds required.
+
+HOME-USE MONITORING DEVICE:
+Key hazards: user misinterpretation of output, silent malfunction, connectivity failure,
+inadequate training, use outside validated patient population.
+Common standards: IEC 60601-1-11 (home healthcare environment), IEC 62366 (usability),
+ISO 81060 or ISO 15197 depending on parameter monitored.
+Severity focus: patient taking inappropriate action on incorrect reading is High severity.
+Plain-language output, clear action guidance, and lay user testing are mandatory.
