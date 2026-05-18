@@ -1,743 +1,386 @@
 [
   {
-    "device_type": "wearable biosensor",
-    "hazard": "incorrect sensor reading",
-    "hazardous_situation": "device reports normal result when patient condition is worsening",
-    "possible_harm": "delayed diagnosis or treatment",
-    "suggested_control": "sensor calibration, alarm validation, clinical verification"
-  },
-  {
-    "device_type": "wearable biosensor",
-    "hazard": "adhesive skin reaction",
-    "hazardous_situation": "prolonged sensor contact causes localized skin irritation or allergic response",
-    "harm": "contact dermatitis, chemical burn, or pressure injury",
-    "possible_causes": [
-      "biocompatible material failure",
-      "prolonged wear beyond recommended duration",
-      "individual skin sensitivity not assessed"
-    ],
-    "risk_controls": [
-      "use ISO 10993-compliant biocompatible adhesive",
-      "label maximum wear duration clearly",
-      "include contraindication for known adhesive allergies in IFU"
-    ],
-    "verification_methods": [
-      "biocompatibility testing per ISO 10993",
-      "clinical wear study",
-      "labeling adequacy review"
-    ]
-  },
-  {
-    "device_type": "wearable biosensor",
-    "hazard": "wireless data transmission failure",
-    "hazardous_situation": "sensor data fails to reach monitoring system during a critical clinical event",
-    "harm": "undetected patient deterioration, delayed clinical intervention",
-    "possible_causes": [
-      "Bluetooth or Wi-Fi interference in clinical environment",
-      "battery depletion without user awareness",
-      "gateway connectivity loss"
-    ],
-    "risk_controls": [
-      "local data buffering with automatic retry logic",
-      "low-battery audible and visual alarm",
-      "connection-loss alert to clinical staff"
-    ],
-    "verification_methods": [
-      "RF range and interference testing",
-      "battery life validation across environmental conditions",
-      "system integration and fail-over testing"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Anti-free-flow mechanism absent or bypassed on administration set removal",
+    "sequence_of_events": "Administration set is removed from pump body without closing roller clamp → gravitational siphoning forces rapid uncontrolled drug delivery to patient",
+    "hazardous_situation": "Patient exposed to uncontrolled gravity-driven drug bolus from IV bag",
+    "harm": "Rapid drug overdose; fatal for high-alert medications (opioids, insulin, vasoactive agents)",
+    "initial_severity": "Catastrophic",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "Mandatory anti-free-flow (AFF) administration set with automatic clamp engagement on set removal; pump design incompatible with non-AFF gravity sets; AFF functionality check step required in IFU; operator training on AFF engagement confirmation",
+    "verification_method": "Free-flow resistance testing per IEC 60601-2-24; simulated clinical removal testing with gloved hands; summative usability evaluation confirming AFF engagement awareness",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
     "device_type": "infusion pump",
-    "hazard": "incorrect drug infusion rate",
-    "hazardous_situation": "pump delivers medication at incorrect flow rate due to programming error or mechanical fault",
-    "harm": "drug overdose or underdose leading to adverse drug reaction or treatment failure",
-    "possible_causes": [
-      "clinician programming error on touchscreen",
-      "occlusion upstream causing dose stacking on clearance",
-      "worn pump mechanism delivering inaccurate volume"
-    ],
-    "risk_controls": [
-      "dose error reduction software with configurable hard limits",
-      "occlusion detection alarm with automatic pause",
-      "independent double-check workflow for high-alert medications"
-    ],
-    "verification_methods": [
-      "flow accuracy testing per IEC 60601-2-24",
-      "alarm validation testing",
-      "summative usability study"
-    ]
+    "hazard": "Occlusion detection threshold set too high or downstream occlusion detector malfunction",
+    "sequence_of_events": "Downstream occlusion develops gradually (kinked tubing or clotted cannula) → pressure builds below alarm threshold → drug not delivered for extended period → occlusion clears and accumulated pressure releases accumulated-dose bolus",
+    "hazardous_situation": "Patient receives delayed and then excessive bolus of medication, or receives no drug for a prolonged clinical period",
+    "harm": "Underdose during occlusion causing treatment failure; subsequent dose bolus causing overdose",
+    "initial_severity": "Critical",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "Upstream and downstream occlusion detection with adjustable threshold validated for high-alert medications; accumulated volume estimate displayed at alarm trigger; clinical protocol addressing occlusion resolution and dose management; automatic pump pause on alarm",
+    "verification_method": "Occlusion alarm sensitivity testing per IEC 60601-2-24; accumulated volume accuracy validation; clinical simulation study with nursing staff",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
     "device_type": "infusion pump",
-    "hazard": "air in infusion line",
-    "hazardous_situation": "air bubble enters IV line without triggering the air-in-line detector",
-    "harm": "air embolism, cardiac arrest",
-    "possible_causes": [
-      "empty infusion bag not detected in time",
-      "tubing not properly primed before use",
-      "detector sensitivity degraded after repeated use"
-    ],
-    "risk_controls": [
-      "ultrasonic air-in-line detector with audible and visual alarm",
-      "empty-bag detection with automatic stop",
-      "priming procedure required before pump activation"
-    ],
-    "verification_methods": [
-      "air detection sensitivity testing per IEC 60601-2-24",
-      "empty-bag alarm validation",
-      "simulated clinical use testing"
-    ]
+    "hazard": "Air-in-line detector sensitivity below validated threshold",
+    "sequence_of_events": "IV bag empties without triggering empty-bag detection → air enters administration set → air-in-line detector generates delayed or absent alert → air bolus passes through pump to IV cannula",
+    "hazardous_situation": "Clinically significant air bolus passes undetected through infusion line toward patient vasculature",
+    "harm": "Venous or arterial air embolism; potentially fatal pulmonary or cardiac arrest",
+    "initial_severity": "Catastrophic",
+    "initial_probability": "Remote",
+    "initial_risk": "HIGH",
+    "risk_control": "Ultrasonic air-in-line detector validated to detect bubbles ≥0.1 mL per IEC 60601-2-24; empty-bag detection with automatic pump stop; mandatory priming procedure before pump activation; periodic detector self-check at power-on",
+    "verification_method": "Air detection sensitivity testing across validated bubble volumes and infusion rates per IEC 60601-2-24; empty-bag alarm activation testing; simulated priming evaluation in usability study",
+    "residual_severity": "Catastrophic",
+    "residual_probability": "Remote",
+    "residual_risk": "MEDIUM",
+    "residual_risk_acceptability": "Acceptable with benefit-risk justification"
   },
   {
     "device_type": "infusion pump",
-    "hazard": "free-flow of medication",
-    "hazardous_situation": "infusion set allows uncontrolled gravity flow when disconnected from pump",
-    "harm": "rapid drug overdose",
-    "possible_causes": [
-      "anti-free-flow clamp not engaged by user",
-      "single-use set reused after clamp spring fatigue",
-      "damaged clamp mechanism not detected before use"
-    ],
-    "risk_controls": [
-      "anti-free-flow design requiring active clamp engagement",
-      "incompatibility with gravity administration by design",
-      "mandatory pre-use clamp inspection step in IFU"
-    ],
-    "verification_methods": [
-      "free-flow performance testing",
-      "clamp mechanical durability testing",
-      "usability testing with simulation"
-    ]
+    "hazard": "Drug library contains multiple similarly named or concentrations-ambiguous drug profiles",
+    "sequence_of_events": "Clinician searches drug library under time pressure → selects incorrectly named or adjacent drug profile → programs infusion using wrong concentration or dose unit → pump calculates incorrect flow rate for prescribed dose",
+    "hazardous_situation": "Patient receives drug at a dose significantly above or below the prescribed therapeutic dose due to library selection error",
+    "harm": "Overdose or underdose of high-alert medication; adverse drug event or treatment failure",
+    "initial_severity": "Critical",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "Dose error reduction software (DERS) with hard minimum and maximum dose limits per drug; drug profile naming convention minimising confusion; mandatory confirmation screen displaying drug name, concentration, and calculated dose before start; independent double-check requirement for high-alert protocols",
+    "verification_method": "DERS hard limit validation against drug library; summative usability evaluation with nurse participants under simulated clinical conditions; drug library validation testing against clinical formulary",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "glucose monitor",
-    "hazard": "inaccurate blood glucose reading",
-    "hazardous_situation": "device reports blood glucose within normal range when patient is hypoglycemic",
-    "harm": "failure to treat hypoglycemia resulting in loss of consciousness or seizure",
-    "possible_causes": [
-      "hematocrit interference outside validated range",
-      "expired test strip used",
-      "insufficient blood sample volume applied"
-    ],
-    "risk_controls": [
-      "hematocrit correction algorithm with flagging outside range",
-      "strip expiry date detection with blocking error code",
-      "insufficient sample volume detection before result display"
-    ],
-    "verification_methods": [
-      "analytical accuracy testing per ISO 15197",
-      "interference testing across hematocrit range",
-      "clinical performance study"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Mechanical wear in peristaltic or syringe pump mechanism causing volumetric inaccuracy",
+    "sequence_of_events": "Pump mechanism wears with repeated clinical use → delivered volume per actuator cycle decreases or increases → cumulative dose deviation accumulates over extended infusion period",
+    "hazardous_situation": "Patient receives systematically incorrect cumulative dose over hours of infusion",
+    "harm": "Chronic underdose (treatment failure) or overdose (drug toxicity) particularly for narrow therapeutic index drugs",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Flow accuracy specifications meeting IEC 60601-2-24 requirements validated at start-of-life and end-of-life; preventive maintenance schedule with recalibration intervals; annual accuracy verification protocol; service life limit after which pump must be decommissioned",
+    "verification_method": "Flow accuracy testing per IEC 60601-2-24 at new and end-of-service conditions; mechanical wear accelerated life testing; field calibration validation study",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "glucose monitor",
-    "hazard": "sensor or meter calibration drift",
-    "hazardous_situation": "device reading drifts over time without user awareness",
-    "harm": "systematic dosing errors leading to chronic hyperglycemia or hypoglycemia",
-    "possible_causes": [
-      "electrochemical sensor aging beyond validated period",
-      "temperature or humidity outside specified storage conditions",
-      "user skips quality control checks"
-    ],
-    "risk_controls": [
-      "mandatory calibration or warm-up reminder at startup",
-      "built-in quality control check strips with expected value range",
-      "sensor or strip expiry alarm"
-    ],
-    "verification_methods": [
-      "long-term accuracy stability testing",
-      "environmental stress testing",
-      "field calibration audit"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Insufficient battery capacity or inadequate battery management during patient transport",
+    "sequence_of_events": "Pump operates on battery during patient transport between clinical areas → battery depletes → low battery alarm is missed or insufficient response time → pump ceases infusion before reaching next AC power source",
+    "hazardous_situation": "Critical drug infusion unexpectedly interrupts during patient transport with no immediate ability to restart",
+    "harm": "Interruption of life-sustaining therapy (vasopressor, anticoagulant, analgesic); haemodynamic instability, pain, thrombus formation",
+    "initial_severity": "Critical",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "Battery capacity validated for minimum 4-hour transport at maximum clinical load; multi-stage low battery alarm at ≥60 and ≥30 minutes remaining; non-interruptible alarm escalation after initial silence; transport protocol requiring battery charge verification before patient movement",
+    "verification_method": "Battery life testing under maximum load conditions; low battery alarm threshold validation at both warning stages; clinical transport simulation testing across representative patient transfer scenarios",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "glucose monitor",
-    "hazard": "incorrect user sampling technique",
-    "hazardous_situation": "patient applies insufficient or contaminated blood sample to test strip",
-    "harm": "inaccurate reading leads to inappropriate insulin dose",
-    "possible_causes": [
-      "inadequate user training for self-monitoring",
-      "complex interface for elderly or visually impaired users",
-      "instructions for use not available in user's language"
-    ],
-    "risk_controls": [
-      "audible sample sufficiency confirmation before result display",
-      "simplified step-by-step graphical user interface",
-      "multilingual instructions for use"
-    ],
-    "verification_methods": [
-      "formative and summative usability evaluation",
-      "human factors study with intended user population",
-      "training program validation"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Small touchscreen target areas and absence of adequate confirmation barrier for dose entry",
+    "sequence_of_events": "Clinician enters dose or infusion rate on touchscreen under time pressure or wearing gloves → adjacent key activated → incorrect value accepted without sufficient re-entry confirmation step → infusion programmed at wrong rate",
+    "hazardous_situation": "Patient infused at significantly incorrect rate (e.g., 10-fold error) due to data entry error on touchscreen",
+    "harm": "Drug overdose or underdose; potentially fatal for high-alert medications (heparin, insulin, morphine)",
+    "initial_severity": "Critical",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "DERS hard limits blocking activation if dose exceeds validated maximum; mandatory re-entry confirmation step for any dose exceeding soft limit; touchscreen key size and spacing validated per IEC 62366; soft key lockout requiring clinician override above soft limits",
+    "verification_method": "Simulated gloved touchscreen use accuracy testing; DERS hard limit activation validation; summative usability study with nurse participants under representative clinical workload",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "blood pressure monitor",
-    "hazard": "incorrect cuff application",
-    "hazardous_situation": "cuff applied over clothing or at incorrect position on arm",
-    "harm": "inaccurate BP reading resulting in missed hypertension or false positive diagnosis",
-    "possible_causes": [
-      "positioning instructions unclear for home user",
-      "wide range of arm circumferences not addressed by single cuff",
-      "user self-measuring without any training"
-    ],
-    "risk_controls": [
-      "cuff position indicator with user feedback",
-      "cuff size selection guide in labeling",
-      "on-device animated positioning instruction"
-    ],
-    "verification_methods": [
-      "clinical accuracy study per ISO 81060-2",
-      "usability study with intended lay user population",
-      "labeling adequacy review"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Software fault causing pump software to become unresponsive during active infusion",
+    "sequence_of_events": "Runtime software fault (memory overflow, unhandled exception, watchdog timeout) occurs during active infusion → pump user interface becomes unresponsive → pump either continues at last programmed rate without responding to commands or stops abruptly",
+    "hazardous_situation": "Clinician cannot modify or stop infusion; pump may deliver uncontrolled drug or cease critical therapy",
+    "harm": "Drug over-delivery if pump continues uncontrolled; therapy interruption if pump stops unexpectedly; both potentially life-threatening for critical medications",
+    "initial_severity": "Critical",
+    "initial_probability": "Remote",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Fail-safe software architecture: on watchdog timeout or detected fault, pump stops infusion and activates highest-priority audible and visual alarm; hardware-level emergency stop accessible without software; software developed and tested per IEC 62304 Class C with fault injection testing",
+    "verification_method": "Fault injection and software robustness testing per IEC 62304; watchdog timer activation and fail-safe stop validation; hardware stop mechanism functional testing; regression testing before each software release",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "blood pressure monitor",
-    "hazard": "irregular heartbeat interference with oscillometric algorithm",
-    "hazardous_situation": "arrhythmia during measurement causes algorithm to output erroneous BP value",
-    "harm": "falsely elevated or depressed BP reading leading to inappropriate treatment decision",
-    "possible_causes": [
-      "oscillometric algorithm not validated in arrhythmia population",
-      "atrial fibrillation highly prevalent in hypertensive target population"
-    ],
-    "risk_controls": [
-      "irregular heartbeat indicator flag displayed with measurement",
-      "IFU recommendation to confirm reading with clinician when flag is shown",
-      "clinical algorithm validation including arrhythmia subjects"
-    ],
-    "verification_methods": [
-      "clinical validation study including AF population",
-      "algorithm performance testing",
-      "labeling review"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "High alarm frequency causing clinical staff to habitually silence infusion pump alarms",
+    "sequence_of_events": "Pump generates frequent low-priority alarms (near-empty bag, routine KVO alerts) → clinical staff conditioned to silence alarms quickly without full assessment → high-priority occlusion or air-in-line alarm is silenced reflexively → true patient safety alarm goes unresolved",
+    "hazardous_situation": "Clinical staff inadvertently silence a true critical patient safety alarm due to alarm fatigue",
+    "harm": "Failure to respond to critical infusion event; patient harm from undetected drug delivery error or air embolism",
+    "initial_severity": "Critical",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "Alarm priority differentiation with distinct audible tones per IEC 60601-1-8; high-priority alarms escalate after short silence period; smart bag-empty prediction to reduce low-priority alarm frequency; alarm management clinical protocol documentation; alarm frequency data reviewed in post-market surveillance",
+    "verification_method": "Alarm prioritisation validation per IEC 60601-1-8; auditory distinctiveness testing across alarm categories; alarm escalation timing validation; clinical simulation study measuring alarm fatigue behaviour",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "blood pressure monitor",
-    "hazard": "battery depletion during measurement",
-    "hazardous_situation": "device powers off mid-measurement for patient with uncontrolled hypertension",
-    "harm": "missed reading delays detection and treatment of hypertensive crisis",
-    "possible_causes": [
-      "no low-battery warning before depletion",
-      "battery drains faster in cold home environment",
-      "user reliant on single device without backup"
-    ],
-    "risk_controls": [
-      "low-battery visual and audible warning at sufficient remaining capacity",
-      "battery performance tested across operating temperature range",
-      "IFU guidance on battery maintenance frequency"
-    ],
-    "verification_methods": [
-      "battery life testing under load",
-      "environmental performance testing",
-      "labeling adequacy review"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Generic or incompatible third-party administration set used with proprietary pump mechanism",
+    "sequence_of_events": "User selects non-validated generic administration set → tubing diameter or material compliance differs from validated set → pump delivers incorrect volume per actuator stroke → flow rate deviates from programmed rate throughout infusion",
+    "hazardous_situation": "Patient receives systematic cumulative over- or under-dose due to set dimension mismatch",
+    "harm": "Cumulative overdose or underdose; clinical significance dependent on drug and magnitude of deviation",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Administration set compatibility list in IFU with validated set part numbers; physical or electronic set recognition preventing operation with non-validated sets; validated set labeling with compatible pump model reference; clinical procurement policy specifying approved sets",
+    "verification_method": "Flow accuracy testing with validated and non-validated set types across infusion rates; set recognition feature validation; labeling adequacy review",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "ECG monitor",
-    "hazard": "poor electrode skin contact",
-    "hazardous_situation": "dry or displaced electrode produces high-impedance artifact masking ECG waveform",
-    "harm": "missed arrhythmia or ST-elevation leading to delayed cardiac intervention",
-    "possible_causes": [
-      "electrode drying during extended monitoring",
-      "patient movement dislodging electrode",
-      "inadequate skin preparation before electrode placement"
-    ],
-    "risk_controls": [
-      "lead-off detection alarm with audible and visual alert",
-      "impedance monitoring with alert threshold",
-      "skin preparation instructions in IFU"
-    ],
-    "verification_methods": [
-      "lead impedance alarm testing",
-      "signal quality validation across impedance range",
-      "usability study with clinical staff"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Patient misidentification or incorrect therapy profile selection in multi-patient clinical environment",
+    "sequence_of_events": "Clinician retrieves patient order from clinical information system → incorrect patient or therapy profile selected due to similar name or adjacent list item → infusion programmed for wrong patient's drug protocol → patient receives incorrect drug, concentration, or dose duration",
+    "hazardous_situation": "Patient receives another patient's prescribed therapy or a mismatched drug protocol",
+    "harm": "Wrong drug or dose administration; adverse event or treatment failure depending on drugs involved",
+    "initial_severity": "Critical",
+    "initial_probability": "Remote",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Barcode or NFC patient identification verification before therapy initiation; confirmation screen displaying patient name and MRN before start; DERS limits flagging incompatible therapy parameters; independent double-check workflow required for high-alert drug protocols",
+    "verification_method": "Patient ID verification workflow testing; summative usability study including patient identification step; system integration testing with electronic prescribing system under simulated multi-patient scenarios",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "ECG monitor",
-    "hazard": "rhythm classification algorithm false negative",
-    "hazardous_situation": "automated arrhythmia detection outputs false negative for ventricular fibrillation",
-    "harm": "alarm not triggered, fatal arrhythmia untreated",
-    "possible_causes": [
-      "algorithm training data not representative of all waveform morphologies",
-      "noise rejection threshold set too aggressively",
-      "algorithm not validated for pediatric patient population"
-    ],
-    "risk_controls": [
-      "algorithm validated on diverse annotated ECG database",
-      "secondary confirmation mechanism before suppressing critical alarm",
-      "clinician manual override capability"
-    ],
-    "verification_methods": [
-      "algorithm performance testing per IEC 60601-2-47",
-      "clinical validation study",
-      "independent annotation review"
-    ]
+    "device_type": "infusion pump",
+    "hazard": "Loss of wireless communication between pump and clinical information or pharmacy system",
+    "sequence_of_events": "Network outage or RF interference in clinical area → pump loses connectivity → remote dose change or stop order issued by pharmacist or physician not received by pump → pump continues at previous programming for extended period",
+    "hazardous_situation": "Pump operates with outdated infusion parameters after a clinically significant remote order change",
+    "harm": "Patient receives over- or under-dose relative to updated clinical order; risk depends on drug, time interval, and magnitude of discrepancy",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Audible and visual connectivity-loss indicator on pump display; infusion continues at last confirmed programming until clinician manually updates at bedside; remote order change requires bedside nurse acknowledgment before applying; connectivity monitoring with IT and clinical alert",
+    "verification_method": "Communication failure mode simulation testing; dose update workflow validation in disconnected state; clinical simulation of remote dose change with connectivity loss; IT infrastructure monitoring validation",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "ECG monitor",
-    "hazard": "patient lead disconnection",
-    "hazardous_situation": "ECG lead detaches during unattended monitoring without triggering alarm",
-    "harm": "cardiac event undetected, delayed resuscitation",
-    "possible_causes": [
-      "cable fatigue at strain relief point",
-      "inadequate lead retention mechanism for active patients",
-      "alarm silenced by staff and not re-enabled"
-    ],
-    "risk_controls": [
-      "lead-off alarm with automatic escalation after silence timeout",
-      "reinforced lead connectors with positive-latch design",
-      "alarm management policy documentation"
-    ],
-    "verification_methods": [
-      "lead disconnection alarm testing",
-      "cable pull-force and fatigue testing",
-      "clinical alarm audit"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Electrochemical interference from maltose, galactose, or acetaminophen with glucose-oxidase enzyme system",
+    "sequence_of_events": "Patient on peritoneal dialysis or receiving maltodextrin-containing fluid samples blood → interfering substance co-oxidised by enzyme → excess electrical signal generated → meter displays falsely elevated glucose reading",
+    "hazardous_situation": "Patient believes glucose is elevated when actual glucose is within normal or low range",
+    "harm": "Patient administers unnecessary insulin → iatrogenic hypoglycaemia; loss of consciousness, seizure, or death in severe hypoglycaemia",
+    "initial_severity": "Critical",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "Enzyme system with low-interference profile (FAD-GDH or equivalent) validated across interfering substances per ISO 15197 Annex C; labeling contraindication warning for incompatible medications and conditions; interference test results documented in IFU and clinical facility guidance",
+    "verification_method": "Interference testing across common interferents per ISO 15197 Annex C; analytical accuracy study; clinical accuracy study; labeling review including contraindication completeness",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "surgical instrument",
-    "hazard": "instrument mechanical failure during procedure",
-    "hazardous_situation": "cutting or grasping mechanism fails mid-operation",
-    "harm": "unintended tissue damage, hemorrhage, prolonged surgical procedure",
-    "possible_causes": [
-      "material fatigue from exceeding validated reprocessing cycle count",
-      "assembly defect introduced during manufacturing",
-      "use of instrument beyond its validated application"
-    ],
-    "risk_controls": [
-      "cycle count marking on instrument body",
-      "materials and mechanical testing across lifecycle",
-      "pre-use inspection checklist in IFU"
-    ],
-    "verification_methods": [
-      "mechanical fatigue and durability testing",
-      "reprocessing validation per ISO 17664",
-      "design FMEA review"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Hematocrit effect causing systematic underestimation of glucose concentration",
+    "sequence_of_events": "Patient with elevated hematocrit (polycythaemia, neonatal patient, dehydration) performs self-test → high hematocrit reduces rate of glucose diffusion and electrochemical signal → meter displays glucose significantly below actual value",
+    "hazardous_situation": "Patient or caregiver accepts falsely normal glucose result while actual glucose is critically low",
+    "harm": "Untreated hypoglycaemia resulting in neuroglycopenic injury, permanent neurological damage, or death",
+    "initial_severity": "Catastrophic",
+    "initial_probability": "Occasional",
+    "initial_risk": "HIGH",
+    "risk_control": "Hematocrit correction algorithm validated across 20–60% Hct range per ISO 15197; out-of-range hematocrit detection flag blocking result if outside validated range; lot-release QC testing with Hct range acceptance criteria; clinical accuracy study including high-Hct patient groups",
+    "verification_method": "Analytical accuracy testing per ISO 15197 across full validated hematocrit range; clinical performance study including paediatric population; lot release acceptance testing protocol review",
+    "residual_severity": "Serious",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "surgical instrument",
-    "hazard": "inadequate sterilization",
-    "hazardous_situation": "instrument reaches patient with residual biological contamination after reprocessing",
-    "harm": "surgical site infection, sepsis",
-    "possible_causes": [
-      "complex internal geometry trapping debris after use",
-      "reprocessing instructions not validated for all cleaning equipment types",
-      "user deviates from validated cleaning protocol"
-    ],
-    "risk_controls": [
-      "validated cleaning and sterilization instructions per ISO 17664",
-      "design-for-cleanability review with simulated soil testing",
-      "reprocessing training program for sterile processing staff"
-    ],
-    "verification_methods": [
-      "soil removal testing",
-      "sterility assurance level testing",
-      "simulated-use reprocessing study"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Test strip enzymatic reagent degraded by humidity or temperature excursion outside specified storage range",
+    "sequence_of_events": "User stores open strip vial in humid environment or exposes to extreme temperature → enzymatic reagent degrades → user tests glucose with degraded strip → meter produces unreliable reading without flagging an error to the user",
+    "hazardous_situation": "Patient acts on glucose result from a chemically degraded test strip that is outside the device accuracy specification",
+    "harm": "Treatment decision (insulin dose or carbohydrate intake) based on inaccurate glucose reading; hypoglycaemia or hyperglycaemia from inappropriate clinical response",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Strip stability testing across operating and storage temperature and humidity ranges; moisture-barrier vial cap design; in-use expiry period clearly stated on vial label; expiry date encoded in strip barcode for automated meter detection; storage condition warnings in IFU with user comprehension validated",
+    "verification_method": "Environmental stability testing at temperature and humidity extremes; container moisture ingress testing; in-use stability study across vial open period; labeling review and user comprehension usability testing",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "surgical instrument",
-    "hazard": "instrument fragmentation",
-    "hazardous_situation": "a component breaks off and is retained in the surgical site",
-    "harm": "retained foreign body requiring secondary intervention, infection",
-    "possible_causes": [
-      "stress concentration at thin cross-section under load",
-      "brittle fracture from sub-critical material defect",
-      "inadequate pre-use visual inspection"
-    ],
-    "risk_controls": [
-      "design robustness analysis (DFMEA) at fracture-risk features",
-      "surgical count and inspection protocol for all components",
-      "radiopaque markers for X-ray detectability of fragments"
-    ],
-    "verification_methods": [
-      "mechanical stress and fracture testing",
-      "radiopacity verification testing",
-      "simulated-use fragmentation study"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Blood sample volume applied to test strip is below the validated minimum threshold",
+    "sequence_of_events": "User obtains small capillary sample → test strip partially filled → electrochemical signal is incomplete or distorted → meter either displays erroneous result or error code that user overrides or ignores",
+    "hazardous_situation": "Patient receives inaccurate glucose reading from an under-filled test strip and makes a dosing decision",
+    "harm": "Incorrect insulin dose or carbohydrate intake based on invalid glucose result",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Fill detection algorithm blocking result display with mandatory error code if sample volume below validated minimum; test zone design requiring positive wicking confirmation signal; audible and visual fill confirmation feedback before measurement begins; IFU instruction with illustrated sample collection technique",
+    "verification_method": "Minimum sample volume detection validation testing across sample volumes at and below threshold; fill detection algorithm performance validation; usability study evaluating sample collection technique with intended lay user population",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "implantable device",
-    "hazard": "battery end-of-life without patient awareness",
-    "hazardous_situation": "implanted device reaches end-of-life and stops therapy delivery",
-    "harm": "sudden loss of pacing or neurostimulation therapy, life-threatening event",
-    "possible_causes": [
-      "battery longevity shorter than predicted due to high therapy demand",
-      "patient missed scheduled follow-up appointment",
-      "remote monitoring not configured at implant"
-    ],
-    "risk_controls": [
-      "elective replacement indicator with early warning threshold communicated to clinician",
-      "remote monitoring telemetry with automated alert",
-      "patient education on follow-up intervals"
-    ],
-    "verification_methods": [
-      "battery longevity testing under maximum demand conditions",
-      "elective replacement indicator threshold validation",
-      "remote monitoring system testing"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Residual sugar or chemical substance on fingertip at capillary sampling site",
+    "sequence_of_events": "Patient handles glucose gel, fruit, or juice before testing without washing hands → surface contamination mixed into capillary sample → apparent glucose far exceeds blood glucose → meter displays falsely elevated reading",
+    "hazardous_situation": "Patient makes clinical decision based on a glucose reading substantially higher than actual blood glucose",
+    "harm": "Patient administers excess insulin correction dose → severe iatrogenic hypoglycaemia; potentially fatal in elderly or diabetes patients on intensive insulin therapy",
+    "initial_severity": "Critical",
+    "initial_probability": "Frequent",
+    "initial_risk": "HIGH",
+    "risk_control": "IFU and quick-start guide explicitly instructing hand washing with soap and water before sampling; first-drop wipe step recommended in IFU before capillary sampling; graphical hand hygiene instruction on meter body or packaging; user training programme emphasising contamination risk with comprehension testing",
+    "verification_method": "Contamination interference study simulating clinical contamination scenarios; usability evaluation with emphasis on hand hygiene step comprehension with lay users; labeling adequacy review for contamination warning prominence",
+    "residual_severity": "Serious",
+    "residual_probability": "Occasional",
+    "residual_risk": "MEDIUM",
+    "residual_risk_acceptability": "Acceptable with benefit-risk justification"
   },
   {
-    "device_type": "implantable device",
-    "hazard": "implanted lead fracture",
-    "hazardous_situation": "lead breaks and interrupts electrical continuity between device and target tissue",
-    "harm": "loss of pacing or sensing, arrhythmia, inappropriate shock delivery",
-    "possible_causes": [
-      "repetitive mechanical stress at subclavian crush point",
-      "manufacturing defect in conductor coil",
-      "patient anatomy creating abnormal lead stress"
-    ],
-    "risk_controls": [
-      "lead integrity monitoring algorithm with patient alert",
-      "material and mechanical durability testing across fatigue cycles",
-      "implant technique guidelines minimizing stress concentration"
-    ],
-    "verification_methods": [
-      "mechanical fatigue testing per applicable standard",
-      "lead integrity alarm validation",
-      "post-market surveillance program"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Strip calibration code mismatch between meter setting and current test strip lot",
+    "sequence_of_events": "User opens new strip lot with different calibration code → forgets to update code in meter manually → meter applies incorrect calibration factor to enzyme lot → systematic measurement bias applied to all results from new lot",
+    "hazardous_situation": "All glucose readings from the new strip lot are systematically biased in one direction throughout its use period",
+    "harm": "Persistent over- or under-treatment of diabetes based on systematically incorrect glucose results over days or weeks",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Automatic lot code recognition via barcode on vial or individual strip chip eliminating manual code entry; no-coding or auto-coding design as primary control; mismatch detection alarm if manual coding required; lot change UI prompt when new strip is first inserted",
+    "verification_method": "Auto-coding functionality validation across multiple strip lots; code mismatch detection testing; analytical accuracy testing across multiple calibration code scenarios; labeling review",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "implantable device",
-    "hazard": "MRI-induced device malfunction",
-    "hazardous_situation": "patient undergoes MRI without following MRI conditional labeling requirements",
-    "harm": "device malfunction, cardiac tissue heating, device movement or dislodgement",
-    "possible_causes": [
-      "patient not aware of implant MRI restrictions",
-      "radiology staff not informed of implant before scan",
-      "MRI parameters used outside MRI-conditional labeling"
-    ],
-    "risk_controls": [
-      "patient implant card listing MRI conditions",
-      "MRI-conditional programming mode activated before scan",
-      "pre-scan MRI screening protocol for clinical staff"
-    ],
-    "verification_methods": [
-      "MRI conditional testing per ASTM F2182 and ISO/TS 10974",
-      "labeling adequacy review",
-      "clinical protocol validation study"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Ambient temperature outside validated device operating range during measurement",
+    "sequence_of_events": "Patient performs test in cold outdoor environment or hot vehicle → ambient temperature outside operating specification → enzyme activity altered → electrochemical reaction rate deviates from calibration → meter reads outside accuracy tolerance",
+    "hazardous_situation": "Patient receives glucose reading that is outside the device accuracy specification due to temperature excursion",
+    "harm": "Treatment decision based on inaccurate result; hypoglycaemia or hyperglycaemia from incorrect clinical response",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Integrated temperature sensor with out-of-range flag displayed before result; validated operating range clearly stated on device body and IFU; storage and use temperature range prominently labelled; user guidance on warming meter and strips before use in cold conditions",
+    "verification_method": "Temperature accuracy testing at lower and upper boundary conditions; temperature sensor validation; labeling review; usability testing of out-of-range temperature warning comprehension with lay users",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "diagnostic software",
-    "hazard": "algorithm performance bias",
-    "hazardous_situation": "AI diagnostic model performs significantly worse on patient subgroups underrepresented in training data",
-    "harm": "missed diagnosis or false positive in specific demographic groups",
-    "possible_causes": [
-      "non-diverse training dataset lacking minority demographics",
-      "no subgroup performance analysis during development",
-      "image quality or skin tone variation not accounted for in model"
-    ],
-    "risk_controls": [
-      "subgroup performance analysis required during development and validation",
-      "diverse and representative training and validation dataset",
-      "mandatory clinician review of all AI diagnostic outputs"
-    ],
-    "verification_methods": [
-      "performance testing across demographic subgroups",
-      "independent clinical validation study",
-      "bias and fairness audit"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Battery depletion mid-measurement without adequate prior low-battery warning",
+    "sequence_of_events": "Patient initiates glucose test → battery capacity insufficient to complete full measurement cycle → meter powers off before displaying result → patient unable to determine glucose level",
+    "hazardous_situation": "Patient cannot determine actual glucose level at the intended time of measurement and may be actively hypoglycaemic",
+    "harm": "Delayed hypoglycaemia detection and treatment; loss of consciousness if patient is hypoglycaemic and unable to obtain a valid result and seek help",
+    "initial_severity": "Critical",
+    "initial_probability": "Remote",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Low battery warning displayed at ≥10 test doses remaining capacity; battery check performed at meter startup refusing to initiate measurement if capacity insufficient; IFU guidance on battery replacement frequency; battery life tested across operating temperature range",
+    "verification_method": "Battery life testing at minimum operating voltage under full measurement load; low battery warning threshold validation; startup battery check refusal testing; environmental battery performance testing",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "diagnostic software",
-    "hazard": "software update regression",
-    "hazardous_situation": "software update introduces error in analysis algorithm undetected before deployment",
-    "harm": "systematically incorrect diagnostic outputs affecting large number of patients",
-    "possible_causes": [
-      "inadequate automated regression testing coverage",
-      "no version control on model artifacts",
-      "update deployed without clinical re-validation"
-    ],
-    "risk_controls": [
-      "automated regression test suite against reference dataset before each release",
-      "change control procedure with risk assessment",
-      "staged rollout with post-deployment performance monitoring"
-    ],
-    "verification_methods": [
-      "regression testing on validated reference dataset",
-      "change management audit",
-      "post-deployment performance monitoring dashboard"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Low display contrast or small digit size causing misreading of glucose result",
+    "sequence_of_events": "Patient tests glucose in poorly lit room at night or in direct sunlight → display contrast insufficient for ambient conditions → patient misreads a digit (e.g., 4.0 misread as 1.0 mmol/L) → patient makes dosing decision based on misread value",
+    "hazardous_situation": "Patient makes clinical decision based on a glucose value that is significantly different from what is actually displayed on the meter",
+    "harm": "Inappropriate insulin dose or carbohydrate intake causing hypo- or hyperglycaemia",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Display minimum contrast ratio validated per IEC 62366 requirements; automatic backlight activation in low-light conditions; minimum digit height meeting legibility standards for intended user population; audio readout option for visually impaired users; units always displayed alongside result",
+    "verification_method": "Display contrast ratio measurement at specified ambient light levels; display legibility usability testing with intended lay user population including elderly users; audio output validation; comprehension testing",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "diagnostic software",
-    "hazard": "data integration mapping error",
-    "hazardous_situation": "software receives incorrect patient data from EHR due to interface mapping error",
-    "harm": "diagnosis based on wrong patient data, potential patient misidentification",
-    "possible_causes": [
-      "HL7 or FHIR field mapping error between systems",
-      "field name mismatch between EHR and software",
-      "unit conversion error in data normalization"
-    ],
-    "risk_controls": [
-      "input data validation and clinical range sanity checks",
-      "patient identifier cross-verification before analysis",
-      "data provenance logging for audit trail"
-    ],
-    "verification_methods": [
-      "interface integration testing with real EHR sandbox",
-      "data accuracy and mapping audit",
-      "penetration testing of data interface"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Bluetooth data packet corruption or field mapping error during transmission to companion app",
+    "sequence_of_events": "Meter performs measurement → Bluetooth data packet corrupted or field value incorrectly mapped during protocol transmission → app receives and displays different value from meter reading → patient or caregiver views app result without cross-checking meter display and makes treatment decision",
+    "hazardous_situation": "Patient uses a transmitted glucose value from the app that differs from the actual measured result on the meter",
+    "harm": "Inappropriate insulin dose or carbohydrate intake based on incorrect app-displayed value",
+    "initial_severity": "Serious",
+    "initial_probability": "Remote",
+    "initial_risk": "LOW",
+    "risk_control": "CRC or equivalent checksum validation on all transmitted glucose data packets; transmission error detected → app prompts user to re-check meter display before acting on result; Bluetooth specification compliance testing; independent audit of transmitted versus meter-displayed values in verification",
+    "verification_method": "Data integrity testing under simulated transmission error conditions; Bluetooth stack protocol compliance validation; accuracy audit across 200 transmission cycles; app usability testing evaluating error handling behaviour",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "mobile health app",
-    "hazard": "incorrect medication reminder timing",
-    "hazardous_situation": "app sends medication reminder at wrong time due to timezone or daylight saving time error",
-    "harm": "missed dose or double dose leading to therapeutic failure or drug toxicity",
-    "possible_causes": [
-      "timezone handling bug in scheduling logic",
-      "daylight saving time transition not handled",
-      "server and device timezone mismatch"
-    ],
-    "risk_controls": [
-      "timezone-aware scheduling with UTC normalization",
-      "dose logging with timestamp to detect missed or duplicate doses",
-      "user-accessible reminder review and edit interface"
-    ],
-    "verification_methods": [
-      "timezone and DST boundary testing across regions",
-      "clinical scenario validation",
-      "summative usability study"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Glucose result unit confusion between mmol/L and mg/dL leading to treatment error",
+    "sequence_of_events": "Patient accustomed to mg/dL units travels to country where meter default is mmol/L → meter displays 5.5 (mmol/L) → patient interprets reading as 5.5 mg/dL (critically hypoglycaemic equivalent) → patient consumes large carbohydrate load or fails to treat actual hypoglycaemia if units reversed",
+    "hazardous_situation": "Patient applies 18-fold incorrect interpretation of glucose value due to unit system mismatch",
+    "harm": "Severe hyperglycaemia from unnecessary large carbohydrate intake; or untreated hypoglycaemia if reversed unit interpretation",
+    "initial_severity": "Critical",
+    "initial_probability": "Remote",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Units (mmol/L or mg/dL) prominently displayed in large font alongside every glucose result; unit setting clearly labelled in device settings menu; audible or visual prompt requiring confirmation when unit setting is changed; IFU section on unit awareness with explicit warning for travellers; clinical guide on checking unit settings",
+    "verification_method": "Display legibility testing for unit label; usability study with participants from both unit-system backgrounds; labeling review confirming unit display prominence; unit change confirmation workflow testing",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   },
   {
-    "device_type": "mobile health app",
-    "hazard": "app crash during symptom data entry",
-    "hazardous_situation": "critical symptom data is lost before transmission to clinical team",
-    "harm": "delayed clinical response to patient deterioration",
-    "possible_causes": [
-      "memory leak on target mobile OS version",
-      "database write error during sync",
-      "network timeout causing uncaught exception"
-    ],
-    "risk_controls": [
-      "local auto-save before any network transmission",
-      "crash reporting and session recovery mechanism",
-      "data sync retry logic with user notification"
-    ],
-    "verification_methods": [
-      "stress and crash testing on target devices",
-      "data integrity testing under network interruption",
-      "regression testing after OS updates"
-    ]
-  },
-  {
-    "device_type": "mobile health app",
-    "hazard": "unauthorized access to patient health data",
-    "hazardous_situation": "weak authentication allows unauthorized user to access patient health records stored in app",
-    "harm": "patient privacy breach, potential misuse of sensitive health data",
-    "possible_causes": [
-      "no biometric or two-factor authentication enforced",
-      "session token not invalidated on logout",
-      "insecure local data storage without encryption"
-    ],
-    "risk_controls": [
-      "mandatory strong authentication with biometric or 2FA option",
-      "encrypted local storage for all health data",
-      "session timeout and token invalidation on logout"
-    ],
-    "verification_methods": [
-      "penetration testing",
-      "OWASP Mobile Top 10 assessment",
-      "HIPAA and GDPR compliance review"
-    ]
-  },
-  {
-    "device_type": "catheter",
-    "hazard": "catheter occlusion",
-    "hazardous_situation": "kinking or thrombus formation blocks fluid flow through catheter lumen",
-    "harm": "failure of drug delivery or drainage, treatment delay",
-    "possible_causes": [
-      "catheter material kinking at anatomical bend points",
-      "blood backflow due to inadequate flushing protocol",
-      "tip malposition increasing occlusion risk"
-    ],
-    "risk_controls": [
-      "kink-resistant catheter material selection",
-      "anti-thrombogenic surface coating",
-      "flushing protocol and frequency specified in IFU"
-    ],
-    "verification_methods": [
-      "kink resistance testing",
-      "flow rate integrity testing",
-      "biocompatibility testing per ISO 10993"
-    ]
-  },
-  {
-    "device_type": "catheter",
-    "hazard": "catheter tip migration",
-    "hazardous_situation": "catheter tip moves from intended anatomical position after initial placement",
-    "harm": "fluid delivered to unintended anatomical site, vessel damage, pneumothorax",
-    "possible_causes": [
-      "inadequate external fixation after placement",
-      "patient movement dislodging catheter",
-      "tip design not optimized for retention in target vessel"
-    ],
-    "risk_controls": [
-      "securement device requirement stated in IFU",
-      "radiopaque tip marker for position verification by imaging",
-      "tip position confirmation protocol before use"
-    ],
-    "verification_methods": [
-      "tip migration testing in simulated anatomy model",
-      "radiopacity testing",
-      "clinical placement validation study"
-    ]
-  },
-  {
-    "device_type": "catheter",
-    "hazard": "catheter-related insertion site infection",
-    "hazardous_situation": "skin microorganisms migrate along catheter tract after insertion",
-    "harm": "catheter-related bloodstream infection, sepsis",
-    "possible_causes": [
-      "break in aseptic technique during insertion",
-      "prolonged indwelling duration beyond recommended maximum",
-      "hub contamination during access"
-    ],
-    "risk_controls": [
-      "antimicrobial catheter surface coating",
-      "sterile insertion kit with procedural checklist",
-      "maximum recommended dwell time stated in IFU"
-    ],
-    "verification_methods": [
-      "antimicrobial efficacy testing",
-      "sterility testing",
-      "clinical infection rate monitoring in post-market surveillance"
-    ]
-  },
-  {
-    "device_type": "ventilator",
-    "hazard": "breathing circuit disconnection",
-    "hazardous_situation": "breathing circuit detaches from patient airway without triggering an alarm",
-    "harm": "complete loss of ventilation, hypoxia, cardiac arrest",
-    "possible_causes": [
-      "low-pressure alarm threshold set too low or disabled by staff",
-      "connector design allows unintentional pull-out under low force",
-      "alarm silenced and timeout not enforced"
-    ],
-    "risk_controls": [
-      "low-pressure disconnect alarm with non-defeatable minimum threshold",
-      "positive-locking circuit connectors",
-      "alarm re-enable after fixed silence timeout"
-    ],
-    "verification_methods": [
-      "disconnect alarm testing per ISO 80601-2-12",
-      "connector pull-force testing",
-      "alarm integration and escalation testing"
-    ]
-  },
-  {
-    "device_type": "ventilator",
-    "hazard": "incorrect tidal volume delivery",
-    "hazardous_situation": "ventilator delivers tidal volume significantly outside prescribed range due to sensor drift or compliance mismatch",
-    "harm": "barotrauma from over-inflation or hypoventilation from under-delivery",
-    "possible_causes": [
-      "patient circuit compliance not compensated in volume calculation",
-      "flow sensor drift over time",
-      "clinician sets incorrect weight-based tidal volume"
-    ],
-    "risk_controls": [
-      "circuit compliance compensation algorithm with auto-measurement",
-      "flow sensor auto-calibration at startup",
-      "weight-based tidal volume calculator with out-of-range alert"
-    ],
-    "verification_methods": [
-      "delivered volume accuracy testing across lung compliance range",
-      "compliance compensation validation",
-      "clinical performance study"
-    ]
-  },
-  {
-    "device_type": "ventilator",
-    "hazard": "oxygen concentration delivery error",
-    "hazardous_situation": "FiO2 delivered to patient deviates significantly from set value",
-    "harm": "hyperoxia causing lung injury or retinopathy, or hypoxia",
-    "possible_causes": [
-      "oxygen sensor failure with no redundant sensing",
-      "blender mechanism fault under supply pressure variation",
-      "gas supply pressure drop below minimum operating pressure"
-    ],
-    "risk_controls": [
-      "redundant oxygen sensing with alarm on deviation from set value",
-      "blender performance tested across validated supply pressure range",
-      "low supply pressure alarm"
-    ],
-    "verification_methods": [
-      "oxygen delivery accuracy testing",
-      "sensor failure mode testing",
-      "gas supply pressure variation testing"
-    ]
-  },
-  {
-    "device_type": "home-use monitoring device",
-    "hazard": "patient misinterpretation of clinical output",
-    "hazardous_situation": "patient misunderstands device output and takes inappropriate self-treatment action",
-    "harm": "delayed emergency care or inappropriate medication adjustment",
-    "possible_causes": [
-      "clinical terminology displayed not accessible to lay user",
-      "no guidance on when to seek emergency care",
-      "ambiguous trend display without context"
-    ],
-    "risk_controls": [
-      "plain-language display with actionable guidance for each result state",
-      "threshold-based alert with explicit seek emergency care instruction",
-      "user interface designed and tested with intended lay population"
-    ],
-    "verification_methods": [
-      "summative usability study with intended lay users",
-      "comprehension testing of output labels",
-      "labeling adequacy review"
-    ]
-  },
-  {
-    "device_type": "home-use monitoring device",
-    "hazard": "silent device malfunction",
-    "hazardous_situation": "device malfunctions and continues displaying readings without alerting user to fault state",
-    "harm": "patient relies on incorrect readings, undetected clinical deterioration",
-    "possible_causes": [
-      "no built-in self-diagnostic test",
-      "fault masked by stale displayed value from last successful measurement",
-      "no connectivity-based remote device health monitoring"
-    ],
-    "risk_controls": [
-      "periodic self-diagnostic with fault indicator on display",
-      "stale data timeout with warning displayed",
-      "remote alert to care team on detected device fault"
-    ],
-    "verification_methods": [
-      "fault detection coverage testing",
-      "self-test validation",
-      "remote monitoring integration testing"
-    ]
-  },
-  {
-    "device_type": "home-use monitoring device",
-    "hazard": "remote data transmission failure",
-    "hazardous_situation": "device fails to transmit patient data to clinical team due to home connectivity loss",
-    "harm": "clinician makes decisions based on outdated or missing patient data",
-    "possible_causes": [
-      "Wi-Fi dropout in home environment",
-      "app installed on unsupported operating system version",
-      "cellular data plan expired on device"
-    ],
-    "risk_controls": [
-      "local data buffering with automatic retry on reconnection",
-      "transmission failure alert to both patient and care team",
-      "minimum connectivity requirement specified in IFU"
-    ],
-    "verification_methods": [
-      "connectivity failure and recovery testing",
-      "data buffering and retry validation",
-      "system integration testing"
-    ]
+    "device_type": "blood glucose meter",
+    "hazard": "Test strips used after printed expiry date or beyond open-vial in-use period",
+    "sequence_of_events": "Patient uses strips from vial opened beyond 90-day in-use period or past printed expiry date → enzyme activity degraded → meter produces inaccurate result with no or dismissed error indication → patient makes treatment decision based on unreliable result",
+    "hazardous_situation": "Patient obtains and acts upon a glucose reading from chemically degraded test strips",
+    "harm": "Treatment decision based on unreliable glucose result; hypo- or hyperglycaemia from incorrect insulin or carbohydrate management",
+    "initial_severity": "Serious",
+    "initial_probability": "Occasional",
+    "initial_risk": "MEDIUM",
+    "risk_control": "Strip lot and expiry date encoded in barcode or chip; meter automatically reads strip expiry at strip insertion and displays warning or blocks measurement if expired or out-of-use-period; in-use expiry date reminder functionality after vial opening date recorded; prominently labelled expiry on vial",
+    "verification_method": "Strip expiry detection and blocking functionality validation; analytical accuracy testing on strips at expiry boundary date; in-use stability testing at end of open-vial period; labeling review; usability testing of expiry warning comprehension and user response",
+    "residual_severity": "Minor",
+    "residual_probability": "Remote",
+    "residual_risk": "LOW",
+    "residual_risk_acceptability": "Acceptable"
   }
 ]

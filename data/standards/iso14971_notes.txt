@@ -1,118 +1,349 @@
-ISO 14971 focuses on medical device risk management.
-# ISO14971 是医疗器械风险管理核心标准
+ISO 14971 Risk Management Framework — Paraphrased Reference Knowledge Base
+==========================================================================
+NOTE: This document is a paraphrased educational summary for AI-assisted RMF
+generation. It is not a copy of the ISO 14971 standard. All content has been
+reworded and reorganised for use as a language model context document.
+==========================================================================
 
-Key process:
-1. Identify hazards.
-# 识别危险源
-2. Estimate and evaluate associated risks.
-# 评估风险（严重性+概率）
-3. Implement risk control measures.
-# 实施风险控制措施
-4. Evaluate residual risks.
-# 评估剩余风险
-5. Maintain risk management throughout lifecycle.
-# 全生命周期持续管理
 
-A risk management file should include:
-# RMF（风险管理文件）需要包含：
-- Device information（设备信息）
-- Hazard identification（危险源）
-- Hazardous situation（危险情境）
-- Possible harm（可能伤害）
-- Severity（严重性）
-- Probability（发生概率）
-- Initial risk level（初始风险）
-- Risk control measure（控制措施）
-- Residual risk（剩余风险）
-- Verification method（验证方法）
-- Review status（状态）
+1. SCOPE AND LIFECYCLE COVERAGE
+--------------------------------
+Risk management under ISO 14971 must cover the entire product lifecycle:
+concept and design, development and verification, manufacturing and production,
+installation and commissioning, clinical use and operation, maintenance and
+servicing, and decommissioning or disposal. All activities that could affect the
+safety of the device or its users must be considered throughout this lifecycle.
+Risk management is not a one-time activity — it must be continuously maintained
+and updated as new information becomes available.
 
---- Device-Type-Specific Risk Context ---
 
-WEARABLE BIOSENSOR:
-Key hazards: sensor inaccuracy, skin biocompatibility, wireless connectivity failure, battery depletion,
-data security breach, environmental interference (motion artifact, sweat).
-Common standards: ISO 10993 (biocompatibility), IEC 60601-1 (electrical safety),
-IEC 62133 (battery safety), relevant GDPR/HIPAA for data.
-Severity focus: missed clinical alerts are typically High severity; skin reactions typically Low-Medium.
+2. RISK MANAGEMENT PLAN
+------------------------
+Before risk analysis begins, a Risk Management Plan (RMP) must be established.
+The RMP defines: the scope of risk management activities; the responsibilities
+and required competencies of personnel involved; the criteria for determining
+risk acceptability; the methods and tools used for hazard identification, risk
+estimation, and risk evaluation; the approach for reviewing risk management
+activities before product release; and the methods for collecting and reviewing
+post-production information. The RMP must be documented and approved before
+risk analysis work commences.
 
-INFUSION PUMP:
-Key hazards: incorrect flow rate, free-flow, air embolism, occlusion, alarm failure, software error.
-Common standards: IEC 60601-2-24 (infusion pump performance), IEC 62366 (usability).
-Severity focus: overdose/underdose of high-alert medications is typically Critical or High severity.
-Dose error reduction software (DERS) with drug library and hard limits is a primary control.
 
-GLUCOSE MONITOR:
-Key hazards: inaccurate reading (false normal, false high, false low), user technique error,
-calibration drift, strip interference (hematocrit, drugs, altitude).
-Common standards: ISO 15197 (in vitro diagnostic accuracy).
-Severity focus: false low reading (missed hypoglycemia) is typically High-Critical severity.
-Self-monitoring devices must account for lay user operation and minimal training.
+3. INTENDED USE AND REASONABLY FORESEEABLE MISUSE
+---------------------------------------------------
+Both the intended use and reasonably foreseeable misuse scenarios must be
+identified and documented. Intended use describes the clinical purpose, patient
+population, intended user, and operating environment of the device.
+Foreseeable misuse includes using the device outside its intended population
+(e.g., paediatric use of an adult device), use in unvalidated environments,
+improper storage, handling errors, maintenance neglect, and use after the end
+of device service life. The characteristics of the intended users — including
+skill level, training, and cognitive load — must be considered, particularly
+for lay users and home-use devices.
 
-BLOOD PRESSURE MONITOR:
-Key hazards: cuff sizing error, motion artifact, irregular heartbeat interference,
-position effect, device calibration drift.
-Common standards: ISO 81060-2 (clinical validation), AAMI/ESH/ISO Universal Protocol.
-Severity focus: systematic error leading to untreated hypertension is Medium-High severity.
-Home-use devices require lay user validation; arrhythmia detection is a known limitation.
 
-ECG MONITOR:
-Key hazards: electrode contact failure, lead disconnection, rhythm misclassification,
-false alarm fatigue, artifact from patient movement or EMI.
-Common standards: IEC 60601-2-47 (ambulatory ECG), IEC 60601-2-27 (bedside ECG).
-Severity focus: missed ventricular fibrillation is Critical. False positive alarms are Medium
-severity but contribute to alarm fatigue which is itself a system-level risk.
+4. HAZARD IDENTIFICATION
+-------------------------
+A hazard is a potential source of harm. Hazard identification must be systematic
+and comprehensive, considering:
 
-SURGICAL INSTRUMENT:
-Key hazards: mechanical failure (breakage, fragmentation), retained foreign body,
-inadequate sterilization, unintended thermal or mechanical tissue injury.
-Common standards: ISO 17664 (reprocessing), ISO 13485 (QMS), ASTM mechanical testing.
-Severity focus: retained foreign body and hemorrhage are High-Critical; infection is High.
-Reprocessing validation is mandatory for reusable instruments.
+  - Energy-related hazards: electrical, mechanical, thermal, acoustic, radiation
+  - Biological hazards: biocompatibility, infection, sterility
+  - Chemical hazards: toxicity, drug interactions, leachables and extractables
+  - Software and algorithm hazards: incorrect outputs, software failures, cybersecurity
+  - Human factors hazards: use errors, misinterpretation of displays, alarm fatigue
+  - Environmental hazards: temperature extremes, humidity, electromagnetic interference
+  - Connectivity and data hazards: communication failures, data corruption, latency
+  - Alarm system hazards: false alarms, missed alarms, alarm fatigue
 
-IMPLANTABLE DEVICE:
-Key hazards: battery depletion, lead fracture, MRI incompatibility, infection, device migration,
-electromagnetic interference, inappropriate therapy delivery.
-Common standards: ISO 14708 (implants), ASTM F2182 / ISO/TS 10974 (MRI safety),
-IEC 60601-2-2 (active implants).
-Severity focus: loss of life-sustaining therapy (pacing, defibrillation) is Critical severity.
-Post-market surveillance and remote monitoring are essential risk controls.
+Hazard identification should draw on historical incident data, literature
+review, FMEA (Failure Modes and Effects Analysis), FTA (Fault Tree Analysis),
+expert judgment, and usability analysis. Both hardware and software failure
+modes should be considered, including single-fault conditions.
 
-DIAGNOSTIC SOFTWARE (AI/ML):
-Key hazards: algorithm bias across demographic subgroups, software regression after update,
-data integration error, cybersecurity vulnerability, over-reliance replacing clinical judgment.
-Common standards: IEC 62304 (software lifecycle), FDA AI/ML SaMD guidance,
-EU MDR Annex I for software as a medical device.
-Severity focus: false negative diagnosis for life-threatening conditions is Critical.
-Algorithm transparency, subgroup validation, and change management are primary controls.
 
-MOBILE HEALTH APP:
-Key hazards: incorrect reminders, data loss on crash, unauthorized data access, OS incompatibility,
-connectivity-dependent functionality failure, misleading health guidance.
-Common standards: IEC 62304, OWASP Mobile Top 10, HIPAA/GDPR.
-Severity focus: missed medication dose for critical therapy is High; privacy breach is Medium-High.
-Usability with lay users and data security are primary design priorities.
+5. SEQUENCE OF EVENTS AND HAZARDOUS SITUATIONS
+------------------------------------------------
+For each identified hazard, the foreseeable sequences of events that lead from
+the hazard to a hazardous situation must be described. A hazardous situation
+arises when a person (patient, user, or bystander) is exposed to a hazard. The
+transition from hazardous situation to harm depends on whether there is an
+opportunity for the person to recognise and avoid the harm. Both normal-use
+scenarios and foreseeable misuse scenarios must be considered in identifying
+hazardous situations. Multiple sequences of events may lead from a single hazard
+to different hazardous situations.
 
-CATHETER:
-Key hazards: occlusion, tip migration, kinking, infection (CRBSI), vessel perforation,
-material incompatibility, thrombosis.
-Common standards: ISO 10555 (intravascular catheters), ISO 10993 (biocompatibility),
-ISO 11135 / ISO 11607 (sterilization and packaging).
-Severity focus: CRBSI (sepsis) and vessel perforation are High-Critical.
-Antimicrobial coatings and strict aseptic technique are key controls.
 
-VENTILATOR:
-Key hazards: circuit disconnection, incorrect tidal volume, FiO2 error, alarm failure,
-power failure, software fault, patient-ventilator asynchrony.
-Common standards: ISO 80601-2-12 (critical care ventilators), IEC 60601-1 (electrical safety),
-IEC 60601-1-8 (alarms).
-Severity focus: loss of ventilation in apneic patient is Critical. Barotrauma and hyperoxia are High.
-Alarm system integrity per IEC 60601-1-8 is mandatory; non-defeatable minimum thresholds required.
+6. RISK ESTIMATION — SEVERITY AND PROBABILITY SCALES
+------------------------------------------------------
+Risk is estimated by combining the severity of potential harm with the
+probability that the harm will occur.
 
-HOME-USE MONITORING DEVICE:
-Key hazards: user misinterpretation of output, silent malfunction, connectivity failure,
-inadequate training, use outside validated patient population.
-Common standards: IEC 60601-1-11 (home healthcare environment), IEC 62366 (usability),
-ISO 81060 or ISO 15197 depending on parameter monitored.
-Severity focus: patient taking inappropriate action on incorrect reading is High severity.
-Plain-language output, clear action guidance, and lay user testing are mandatory.
+SEVERITY LEVELS (from least to most severe):
+  - Negligible: No injury or impact on health; temporary discomfort at most
+  - Minor:      Reversible, temporary injury; no medical intervention required
+  - Serious:    Injury requiring medical intervention; temporary disability
+  - Critical:   Irreversible injury; permanent impairment or significant disability
+  - Catastrophic: Death or life-threatening injury
+
+PROBABILITY LEVELS (from least to most frequent):
+  - Remote:      Very unlikely to occur in the device's expected service life
+  - Occasional:  Unlikely but possible; may occur in a small proportion of uses
+  - Probable:    Likely to occur in a significant proportion of uses
+  - Frequent:    Expected to occur regularly in normal use conditions
+
+Risk estimation should consider both: (a) the probability of the hazardous
+situation occurring, and (b) the conditional probability that the hazardous
+situation results in harm given that it occurs.
+
+RISK LEVEL MATRIX (indicative):
+  Catastrophic  + Occasional/Probable/Frequent = HIGH
+  Catastrophic  + Remote                       = HIGH (benefit-risk required)
+  Critical      + Probable/Frequent            = HIGH
+  Critical      + Occasional                   = HIGH
+  Critical      + Remote                       = MEDIUM
+  Serious       + Probable/Frequent            = HIGH
+  Serious       + Occasional                   = MEDIUM
+  Serious       + Remote                       = LOW
+  Minor         + Probable/Frequent            = MEDIUM
+  Minor         + Occasional/Remote            = LOW
+  Negligible    + Any                          = LOW
+
+
+7. RISK EVALUATION
+-------------------
+After estimating the risk, it must be compared against the risk acceptability
+criteria defined in the RMP. If a risk is unacceptable, risk control measures
+must be implemented. If a risk falls into a broadly acceptable category, it
+still requires documentation and monitoring. Risks in the ALARP (As Low As
+Reasonably Practicable) region require justification that further risk reduction
+is impracticable or that the residual risk is outweighed by clinical benefit.
+
+
+8. RISK CONTROL — PRIORITY ORDER
+----------------------------------
+Risk control must follow a strict priority order:
+
+  Priority 1 — Inherent safety by design:
+    Eliminate or reduce the hazard or hazardous situation through design
+    choices. Examples: fail-safe mechanisms, hardware interlocks, physical
+    separation of hazardous components, use of inherently safer materials.
+    This is always preferred over other control strategies.
+
+  Priority 2 — Protective measures in the device or manufacturing process:
+    Add protective features that reduce the risk but do not eliminate the
+    hazard. Examples: audible and visual alarms, automatic shut-off, software
+    dose limits, secondary confirmation steps, tamper-evident packaging.
+    Protective measures should be automatic and not dependent on user action.
+
+  Priority 3 — Information for safety:
+    Address residual risks through warnings, labeling, instructions for use,
+    training programs, and contraindications. This is the least effective
+    control strategy and should not be used as the primary or sole control
+    for significant risks. Information for safety is appropriate as a
+    supplement to higher-priority controls.
+
+Any risk control measure must not introduce new hazards or increase existing
+risks. A risk-risk tradeoff analysis may be required when controls have
+secondary effects.
+
+
+9. VERIFICATION OF RISK CONTROL MEASURES
+------------------------------------------
+Each risk control measure must be verified for:
+  (a) Correct implementation: the measure has been implemented as intended
+  (b) Effectiveness: the measure actually reduces risk to the expected level
+  (c) No new hazards introduced: the measure does not create additional risks
+
+Verification methods should be specific, measurable, and documented. Appropriate
+methods include: design review, analysis, bench testing, electrical safety
+testing, software testing, simulated clinical use testing, usability evaluation
+(formative and summative), analytical performance testing, and clinical study.
+Results of verification must be recorded in the Risk Management File.
+
+
+10. RESIDUAL RISK EVALUATION
+------------------------------
+After all risk controls are applied, the risk for each hazardous situation must
+be re-evaluated using the same risk estimation criteria. This re-evaluated risk
+is the residual risk. If the residual risk is still unacceptable, the risk
+control process must be repeated or a benefit-risk analysis must be documented.
+Residual severity and probability should both be re-estimated after considering
+the effectiveness of implemented controls.
+
+
+11. BENEFIT-RISK ANALYSIS
+---------------------------
+When residual risk cannot be reduced further by practicable risk controls, the
+clinical benefits of the device must be weighed against the remaining risks.
+This benefit-risk analysis must consider: the clinical benefit of the intended
+use; the probability of clinical benefit occurring; alternative therapies
+available to the patient; and the severity and probability of the residual
+risks. If residual risks are not justified by benefits, the device should not
+be released. The benefit-risk analysis must be documented and retained in the
+Risk Management File.
+
+
+12. OVERALL RESIDUAL RISK
+---------------------------
+The cumulative effect of all residual risks from the entire risk analysis must
+be evaluated as an overall residual risk. This assessment considers whether
+the combination of all individual residual risks — even if each is acceptable
+in isolation — is acceptable as a whole. This overall evaluation must be
+documented, reviewed, and approved before the device is released for production
+or placed on the market.
+
+
+13. PRODUCTION AND POST-PRODUCTION INFORMATION
+------------------------------------------------
+After market release, information from production, field use, customer
+complaints, adverse event reports, vigilance databases, post-market surveillance,
+post-market clinical follow-up, published literature, and recall data must be
+systematically collected and reviewed. If new hazards are identified, risk
+estimates change, or new risk controls are needed, the Risk Management File
+must be updated. Traceability between post-production information and risk
+management activities must be maintained.
+
+
+14. RISK MANAGEMENT FILE AND TRACEABILITY
+------------------------------------------
+The Risk Management File (RMF) must maintain full traceability across:
+  - Hazard identification
+  → Sequence of events leading to hazardous situation
+  → Hazardous situation description
+  → Possible harm and severity
+  → Initial risk level (probability × severity)
+  → Risk control measures applied (in priority order)
+  → Verification method and evidence for each control
+  → Residual risk level
+  → Residual risk acceptability assessment or benefit-risk justification
+  → Overall residual risk conclusion
+  → Review and release status
+
+Each entry in the RMF must be traceable to the hazard it addresses, the
+controls applied, and the evidence supporting the risk evaluation conclusion.
+
+
+==========================================================================
+DEVICE-SPECIFIC RISK CONSIDERATIONS
+==========================================================================
+
+
+INFUSION PUMP SYSTEMS (Volumetric, Syringe, Ambulatory):
+---------------------------------------------------------
+Critical safety functions that must be addressed in every infusion pump RMF:
+
+Free-flow protection:
+  Anti-free-flow (AFF) mechanisms must be a mandatory hardware design feature.
+  Free-flow from gravity is potentially fatal for high-alert medications.
+  AFF clamp design must be validated for ease of engagement under clinical
+  conditions including gloved hands and time pressure.
+
+Occlusion management:
+  Both upstream and downstream occlusion detection must be validated. Alarm
+  threshold sensitivity directly affects downstream drug delivery accuracy
+  and the risk of dose stacking after occlusion clearance. The accumulated
+  volume at the time of occlusion must be considered in the clinical protocol.
+
+Air-in-line detection:
+  Ultrasonic or optical air-in-line detectors must be validated to detect
+  clinically relevant bubble volumes per IEC 60601-2-24. Empty-bag detection
+  and automatic pump stop prevent late-stage air entry. Priming procedures
+  must be clearly described in the IFU.
+
+Drug library and Dose Error Reduction Software (DERS):
+  Drug library validation must confirm that drug profiles, concentration units,
+  and hard/soft limit values are clinically correct. Hard limits must prevent
+  activation when a dose exceeds the maximum safe threshold. Dose calculation
+  software must be validated per IEC 62304 and IEC 60601-2-24.
+
+Battery management:
+  Battery capacity must be validated for the minimum required transport
+  duration under maximum clinical load. Multi-stage low battery alarms with
+  audible and visual indicators at ≥30 minutes remaining capacity are required.
+  Battery state must be verifiable before patient transport.
+
+Alarm system:
+  Alarms must be audible, visible, and prioritised per IEC 60601-1-8.
+  High-priority alarms (e.g., air-in-line, occlusion, free-flow) must be
+  distinct from low-priority alarms. Non-defeatable alarm escalation for
+  critical events must be implemented. Alarm design must consider the high-
+  alarm-frequency clinical environment and the known risks of alarm fatigue.
+
+Human factors and usability:
+  Touchscreen design must be validated under clinical use conditions including
+  gloves, time pressure, and interruptions. Programming workflows must be
+  evaluated in summative usability studies per IEC 62366. Confirmation steps
+  must be required before starting high-alert drug infusions.
+
+Software reliability:
+  Software must be classified and developed per IEC 62304. Fail-safe behaviour
+  on software fault (watchdog timer, controlled stop, alarm) must be designed
+  and validated. Software regression testing is required before each release.
+
+Applicable standards: IEC 60601-2-24, IEC 60601-1-8, IEC 62304, IEC 62366,
+IEC 60601-1, applicable drug library guideline (e.g., ECRI, ISMP).
+
+
+BLOOD GLUCOSE MONITORING SYSTEMS (Self-Monitoring, POC):
+---------------------------------------------------------
+Analytical accuracy requirements:
+  Measurement accuracy must meet ISO 15197 requirements: ≥95% of results
+  within ±15 mg/dL of reference for results <100 mg/dL, or within ±15% for
+  results ≥100 mg/dL. Clinical accuracy criteria (e.g., Clarke Error Grid)
+  must also be assessed. Strip lot-to-lot variability must be characterised
+  and controlled through lot-release QC specifications.
+
+Interference and hematocrit effects:
+  Interference from commonly encountered substances (acetaminophen, vitamin C,
+  uric acid, maltose, ibuprofen) must be characterised per ISO 15197 Annex C.
+  Hematocrit range must be validated (typically 20–60% Hct). Out-of-range
+  hematocrit should be flagged by the device. Interference test results must
+  be documented in the IFU.
+
+Strip integrity and environmental stability:
+  Strip stability must be validated across the stated operating temperature
+  and humidity range. Open-vial in-use stability must be established (typically
+  90 days after opening). Lot expiry detection via barcode or chip is strongly
+  recommended. Storage and environmental conditions must be clearly labelled.
+
+Sample volume and fill detection:
+  Insufficient sample volume must be detected before a result is displayed.
+  Fill detection algorithms must block result display and provide an error code
+  when sample volume is below the validated minimum. Audible or visual fill
+  confirmation feedback assists the user.
+
+User interface and display:
+  Result display must be legible under typical ambient light conditions.
+  Minimum digit height and contrast ratios must meet usability requirements
+  per IEC 62366. Units of measurement (mmol/L or mg/dL) must be prominently
+  displayed alongside every result. Automatic backlight activation in low-
+  light conditions is recommended.
+
+Hypoglycaemia and hyperglycaemia alerting:
+  Threshold alarms for critical high and low glucose values must be
+  distinguishable from routine result displays. Audible alarms for HI/LO
+  conditions must be clearly described in the IFU. Users must be clearly
+  instructed on when to seek emergency medical care.
+
+Auto-coding or no-coding:
+  Manual strip coding is a known source of systematic error. Auto-coding via
+  barcode or strip chip eliminates this error mode and is strongly preferred.
+  If manual coding is required, a mismatch alarm must be implemented.
+
+Data connectivity:
+  Bluetooth or NFC data transmission to companion apps must be validated for
+  data integrity. CRC or checksum validation must prevent incorrect values
+  from being displayed in the app. All transmitted values must match meter
+  display values within the device specification.
+
+Lay user considerations:
+  Self-monitoring devices are used by patients with minimal medical training.
+  Formative and summative usability evaluations per IEC 62366 are required
+  with the intended lay user population. Plain-language output, clear action
+  guidance for critical results, and accessible packaging are required. Elderly
+  users, visually impaired users, and users with manual dexterity limitations
+  must be considered.
+
+Applicable standards: ISO 15197, IEC 62366, IEC 60601-1, applicable regional
+IVD regulations (EU IVDR, FDA 21 CFR Part 820), relevant CLSI guidelines.
